@@ -3,15 +3,21 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
-        HTTP_201_CREATED as ST_201,
-        HTTP_204_NO_CONTENT as ST_204,
-        HTTP_400_BAD_REQUEST as ST_400,
-        HTTP_401_UNAUTHORIZED as ST_401,
-        HTTP_409_CONFLICT as ST_409
+    HTTP_201_CREATED as ST_201,
+    HTTP_204_NO_CONTENT as ST_204,
+    HTTP_400_BAD_REQUEST as ST_400,
+    HTTP_401_UNAUTHORIZED as ST_401,
+    HTTP_409_CONFLICT as ST_409
 )
 
 from base.perms import UserIsStaff
 from .models import Census
+
+from django.http import HttpResponse
+
+
+def index(request):
+    return HttpResponse("Hola que tal")
 
 
 class CensusCreate(generics.ListCreateAPIView):
