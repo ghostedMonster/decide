@@ -8,16 +8,17 @@ RUN pip install psycopg2
 RUN pip install ipdb
 RUN pip install ipython
 
-WORKDIR /decide
+WORKDIR /app
 
-RUN git clone https://github.com/wadobo/decide.git .
-RUN pip install -r requirements.txt
+RUN git clone --branch pagina https://github.com/EGC-GIRATINA/decide.git
+RUN pip install -r decide/requirements.txt
 
-WORKDIR /decide/decide
+WORKDIR /app/decide
 
 # local settings.py
-ADD docker-settings.py /decide/decide/local_settings.py
+ADD docker-settings.py /app/decide/decide/local_settings.py
 
-RUN ./manage.py collectstatic
+RUN ./decide/manage.py collectstatic
+
 
 #CMD ["gunicorn", "-w 5", "decide.wsgi", "--timeout=500", "-b 0.0.0.0:5000"]

@@ -1,9 +1,10 @@
 import json
 from django.views.generic import TemplateView
 from django.conf import settings
-from django.http import Http404
+from django.http import Http404, HttpResponse
+from django.template import loader
 
-from ..base import mods
+from base import mods
 
 
 # TODO: check permissions and census
