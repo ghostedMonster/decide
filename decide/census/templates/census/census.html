@@ -1,5 +1,23 @@
-hola mundo
+<html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'census/census.css' %}">
+    </head>
+    <body>
+        <h1>Censo</h1>
+        hola mundo
 
-{% if hola %}
-    hola
-{% endif %}
+        {% if message %}
+            {{ message }}
+        {% endif %}
+
+        <table>
+            {% for r in datos %}
+                {% cycle '<tr>' '' '' '' '' '' '' %}
+                    <td>{{ r.voting_id }}</td>
+                    <td> {{ r.voter_id }} </td>
+                {% cycle '' '' '' '' '' '</tr>' %}
+            {% endfor %}
+        </table>
+    </body>
+</html>

@@ -26,6 +26,16 @@ from base import mods
 class CensusView(TemplateView):
     template_name = "census/census.html"
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(CensusView, self).get_context_data(**kwargs)
+        context['message'] = 'Aqui estamos'
+        context['datos'] = Census.objects.all()
+        return context
+
+    def get_queryset(self):
+        consulta = Census.objects.all()
+        return consulta
+
 #class CensusCreate(generics.ListCreateAPIView):
 #    permission_classes = (UserIsStaff,)
 
