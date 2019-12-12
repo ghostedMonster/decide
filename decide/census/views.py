@@ -1,17 +1,19 @@
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import TemplateView
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
-        HTTP_201_CREATED as ST_201,
-        HTTP_204_NO_CONTENT as ST_204,
-        HTTP_400_BAD_REQUEST as ST_400,
-        HTTP_401_UNAUTHORIZED as ST_401,
-        HTTP_409_CONFLICT as ST_409
+    HTTP_201_CREATED as ST_201,
+    HTTP_204_NO_CONTENT as ST_204,
+    HTTP_400_BAD_REQUEST as ST_400,
+    HTTP_401_UNAUTHORIZED as ST_401,
+    HTTP_409_CONFLICT as ST_409
 )
 
 from base.perms import UserIsStaff
 from .models import Census
+import django_excel as excel
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -49,3 +51,18 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
         except ObjectDoesNotExist:
             return Response('Invalid voter', status=ST_401)
         return Response('Valid voter')
+
+
+class CensusView(TemplateView):
+    template_name = "census/census.html"
+
+    def exportarDatos(request):
+        export = []
+        export.append(['votantes', 'votaciones'])
+
+        census = Census.objects.all()
+        for censo in census:
+            export.append([censo.voter_id,censo.voting_id])
+        sheet = excel.pe.Sheet(export)
+
+        return excel.make_response(sheet, "csv", file_name="censo.csv")
