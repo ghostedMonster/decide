@@ -1,3 +1,5 @@
+from pyexpat.errors import messages
+
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import TemplateView
@@ -56,13 +58,22 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
 class CensusView(TemplateView):
     template_name = "census/census.html"
 
-    def exportarDatos(request):
+    def exportarDatos(request, format_exp=None):
         export = []
         export.append(['votantes', 'votaciones'])
 
         census = Census.objects.all()
+
         for censo in census:
             export.append([censo.voter_id,censo.voting_id])
         sheet = excel.pe.Sheet(export)
 
-        return excel.make_response(sheet, "csv", file_name="censo.csv")
+        if format_exp == "csv":
+            return excel.make_response(sheet, "csv", file_name="censo.csv")
+        elif format_exp == "ods":
+            return excel.make_response(sheet, "ods", file_name="censo.ods")
+        elif format_exp == "xlsx":
+            return excel.make_response(sheet, "xlsx", file_name="censo.xlsx")
+        else:
+            messages.error(request, 'Este formato {} no es valido'.format(format_exp))
+            return excel.make_response(sheet, "ods", file_name="censo.csv")
