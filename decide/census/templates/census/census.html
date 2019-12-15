@@ -5,19 +5,21 @@
     </head>
     <body>
         <h1>Censo</h1>
-        hola mundo
-
-        {% if message %}
-            {{ message }}
+        {% if check_user %}
+            <table>
+                <tr>
+                    <th>ID de votación</th>
+                    <th>ID de votante</th>
+                </tr>
+                {% for r in datos %}
+                    <tr>
+                        <td> {{ r.voting_id }} </td>
+                        <td> {{ r.voter_id }} </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No está logueado como administrador. por favor, <a href="http://localhost:8000/admin/login/?next=/admin/">inicie sesión</a> y vuelva aquí</p>
         {% endif %}
-
-        <table>
-            {% for r in datos %}
-                {% cycle '<tr>' '' '' '' '' '' '' %}
-                    <td>{{ r.voting_id }}</td>
-                    <td> {{ r.voter_id }} </td>
-                {% cycle '' '' '' '' '' '</tr>' %}
-            {% endfor %}
-        </table>
     </body>
 </html>

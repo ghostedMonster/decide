@@ -1,8 +1,7 @@
-from django.db.utils import IntegrityError
-from django.core.exceptions import ObjectDoesNotExist
-from django.template import loader
-from django.views import generic
-from django.views.generic.base import View, TemplateView
+import sys
+
+from django.views.generic import FormView
+from django.views.generic.base import TemplateView
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -16,25 +15,57 @@ from django.conf import settings
 from base.perms import UserIsStaff
 from rest_framework.utils import json
 
+from .forms import CensusForm
 from .models import Census
 
-from django.http import HttpResponse, Http404
-
 from base import mods
-
 
 class CensusView(TemplateView):
     template_name = "census/census.html"
 
     def get_context_data(self, *args, **kwargs):
         context = super(CensusView, self).get_context_data(**kwargs)
+
+        context['check_user'] = False
+
+        if self.request.user.is_authenticated:
+            if self.request.user.is_superuser:
+                context['check_user'] = True
+
         context['message'] = 'Aqui estamos'
-        context['datos'] = Census.objects.all()
+        datos = Census.objects.all()
+
+        #users = []
+        #votings = []
+
+        #for dato in datos:
+        #    votings.append(mods.get('voting', params={'id': dato.voting_id}))
+           # users.append(mods.get('auth', params={'id': dato.voter_id}))
+
+
+        #datos_usuarios = []
+        #datos_votaciones = []
+        #for i in votings:
+        #    datos_votaciones.append(i[0]['name'])
+        context['datos'] = datos
+
+        #for i in range(0, len(datos_usuarios)):
+        #    context['datos'].append({})
+        #    context['datos'][i]['voting_id'] = datos_votaciones[i]
+        #    context['datos'][i]['voter_id'] = datos[i]['voter_id']
         return context
 
-    def get_queryset(self):
-        consulta = Census.objects.all()
-        return consulta
+class CensusLogin(FormView):
+    template_name = 'census/login.html'
+    form_class = CensusForm
+    success_url = '/census/census/'
+
+
+
+
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+
 
 #class CensusCreate(generics.ListCreateAPIView):
 #    permission_classes = (UserIsStaff,)
