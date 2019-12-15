@@ -1,4 +1,7 @@
 import json
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.http import Http404
@@ -30,3 +33,20 @@ class VisualizerView(TemplateView):
         votantes = 1521
         desviacion = 0.321457
         return render(request, 'visualizer/visualizador.html', {'porcentajes': porcentajes, 'votos': votos, 'votantes':votantes, 'desviacion':desviacion})
+
+    def descargaPDF(request):
+        # Create the HttpResponse object with the appropriate PDF headers.
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="datos_decide.pdf"'
+
+        # Create the PDF object, using the response object as its "file."
+        p = canvas.Canvas(response)
+
+        # Draw things on the PDF. Here's where the PDF generation happens.
+        # See the ReportLab documentation for the full list of functionality.
+        p.drawString(100, 100, "Aquí se mostrarán los datos en PDF")
+
+        # Close the PDF object cleanly, and we're done.
+        p.showPage()
+        p.save()
+        return response
