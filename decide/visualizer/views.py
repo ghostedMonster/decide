@@ -1,6 +1,7 @@
 import json
 from django.views.generic import TemplateView
 from django.views.generic import ListView
+from django.views.generic import DetailView
 from django.conf import settings
 from django.http import Http404
 
@@ -33,15 +34,24 @@ class VisualizerView(TemplateView):
         votantes = 1521
         desviacion = 0.321457
         return render(request, 'visualizer/visualizador.html', {'porcentajes': porcentajes, 'votos': votos, 'votantes':votantes, 'desviacion':desviacion})
-    '''
-    def votings(request):
-        votings = Voting.objects.all()
-
-        return render(request, 'visualizer/voting_list.html', {'votings': votings})
-'''
+    
 class VotingListView(ListView):
     model = Voting
     context_object_name = 'voting_list'  
     queryset = Voting.objects.all()
     template_name = 'visualizer/voting_list.html'  
+
+
+class VotingDetailView(DetailView):
+    model = Voting
+    template_name = 'visualizer/voting_detail.html'
+    def voting_detail_view(request,pk):
+        try:
+            voting_id=Voting.objects.get(pk=pk)
+        except Voting.DoesNotExist:
+            raise Http404("Voting does not exist")
+
+        #voting_id=get_object_or_404(Voting, pk=pk)
+        
+        
     

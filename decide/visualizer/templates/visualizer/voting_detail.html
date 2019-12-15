@@ -9,33 +9,29 @@
     <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
 {% endblock %}
 
-
 {% block content %}
-    <h1>Lista de votaciones</h1>
-    
-    {% if voting_list %}
-    <ul>
-        {% for voting in voting_list %}
-            <li>
-                <h3> {{ voting.name }} </h3>
-                <p> <strong> Pregunta: </strong> {{voting.question}} </p>
-                <p> <strong> Descripción: </strong> {{voting.desc}} </p>
-                <a href="../voting/{{voting.id}}"> Enlace </a>
-
-            </li>
-            <br/>
-        {% endfor %}
-
-    </ul>
-    {% else %}
-        <p>No hay votaciones en el sistema.</p>
-    {% endif %}    
-
-
-------- <br/>
-{{votings}}
-
-
+  <h1>Nombre: {{ voting.name }}</h1>
+    {% if voting.desc %}
+        <p><strong>Descripción:</strong> {{ voting.desc }}</p>
+    {% endif %}
+    {% if voting.start_date %}
+        <p><strong>Fecha de inicio:</strong> {{ voting.start_date }}</p> 
+    {% endif %}
+    {% if voting.end_date %}
+        <p><strong>Fecha de fin:</strong> {{ voting.end_date }}</p>  
+    {% endif %}
+  
+  
+  <p><strong>Pregunta:</strong> {{ voting.question }}</p>  
+  <p><strong>Votos:</strong> {{ voting.votes }}</p>  
+  
+    <!-- 
+  <p><strong>Genre:</strong> 
+    {% for genre in book.genre.all %}
+     {{ genre }}
+    {% if not forloop.last %}, {% endif %}{% endfor %}</p>  
+    -->
+  
 {% endblock %}
 
 {% block extrabody %}
