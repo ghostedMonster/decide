@@ -1,7 +1,14 @@
+
 import sys
 
 from django.views.generic import FormView
 from django.views.generic.base import TemplateView
+from pyexpat.errors import messages
+
+from django.db.utils import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import TemplateView
+
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -17,6 +24,7 @@ from rest_framework.utils import json
 
 from .forms import CensusForm
 from .models import Census
+import django_excel as excel
 
 from base import mods
 
@@ -54,6 +62,26 @@ class CensusView(TemplateView):
         #    context['datos'][i]['voting_id'] = datos_votaciones[i]
         #    context['datos'][i]['voter_id'] = datos[i]['voter_id']
         return context
+
+    def exportarDatos(request, format_exp=None):
+        export = []
+        export.append(['votantes', 'votaciones'])
+
+        census = Census.objects.all()
+
+        for censo in census:
+            export.append([censo.voter_id, censo.voting_id])
+        sheet = excel.pe.Sheet(export)
+
+        if format_exp == "csv":
+            return excel.make_response(sheet, "csv", file_name="censo.csv")
+        elif format_exp == "ods":
+            return excel.make_response(sheet, "ods", file_name="censo.ods")
+        elif format_exp == "xlsx":
+            return excel.make_response(sheet, "xlsx", file_name="censo.xlsx")
+        else:
+            messages.error(request, 'Este formato {} no es valido'.format(format_exp))
+
 
 class CensusLogin(FormView):
     template_name = 'census/login.html'
@@ -102,3 +130,4 @@ class CensusLogin(FormView):
         #except ObjectDoesNotExist:
         #   return Response('Invalid voter', status=ST_401)
         #return Response('Valid voter')
+

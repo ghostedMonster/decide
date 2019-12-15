@@ -1,3 +1,4 @@
+
 <html>
     <head>
         {% load static %}
@@ -17,9 +18,19 @@
                         <td> {{ r.voter_id }} </td>
                     </tr>
                 {% endfor %}
+            <div class="dropdown">
+            <button class="dropbtn">Exportar Censo</button>
+            <div class="dropdown-content">
+            <a href="/census/resultados/csv">Exportar datos en csv</a> </br>
+            <a href="/census/resultados/ods">Exportar datos en ods</a> </br>
+            <a href="/census/resultados/xlsx">Exportar datos en xlsx</a>
+            </div>
+            </div>
+
             </table>
         {% else %}
             <p>No está logueado como administrador. por favor, <a href="http://localhost:8000/admin/login/?next=/admin/">inicie sesión</a> y vuelva aquí</p>
         {% endif %}
     </body>
+
 </html>
