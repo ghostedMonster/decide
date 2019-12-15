@@ -1,7 +1,10 @@
 import json
 from django.views.generic import TemplateView
+from django.views.generic import ListView
 from django.conf import settings
 from django.http import Http404
+
+from voting.models import Voting
 
 from base import mods
 from django.shortcuts import render
@@ -30,3 +33,15 @@ class VisualizerView(TemplateView):
         votantes = 1521
         desviacion = 0.321457
         return render(request, 'visualizer/visualizador.html', {'porcentajes': porcentajes, 'votos': votos, 'votantes':votantes, 'desviacion':desviacion})
+    '''
+    def votings(request):
+        votings = Voting.objects.all()
+
+        return render(request, 'visualizer/voting_list.html', {'votings': votings})
+'''
+class VotingListView(ListView):
+    model = Voting
+    context_object_name = 'voting_list'  
+    queryset = Voting.objects.all()
+    template_name = 'visualizer/voting_list.html'  
+    
