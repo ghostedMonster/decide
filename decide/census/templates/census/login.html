@@ -1,0 +1,43 @@
+<html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'census/census.css' %}">
+    </head>
+    <body>
+        <h1>Censo</h1>
+
+        {% if form.errors %}
+            <p>El usuario y la contraseña no son válidos</p>
+        {% endif %}
+
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p>Tu cuenta no puede entrar a la página. Por favor, Inicia sesión con una cuenta de administrador
+                    para seguir</p>
+            {% else %}
+                <p>Por favor, inicie sesión</p>
+            {% endif %}
+        {% endif %}
+
+        <form action="{% url 'census_login' %}" method="post">
+            {% csrf_token %}
+
+            <div>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </div>
+
+            <div>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </div>
+
+            <label for="username">Username: </label>
+            <input id="username" type="text" name="username" value="{{ username }}">
+
+            <label for="password">Password: </label>
+            <input id="password" type="password" name="password" value="{{ password }}">
+            <input type="submit" value="Inicia Sesión">
+        </form>
+    </body>
+</html>

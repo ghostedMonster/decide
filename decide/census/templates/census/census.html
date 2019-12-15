@@ -1,0 +1,25 @@
+<html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'census/census.css' %}">
+    </head>
+    <body>
+        <h1>Censo</h1>
+        {% if check_user %}
+            <table>
+                <tr>
+                    <th>ID de votación</th>
+                    <th>ID de votante</th>
+                </tr>
+                {% for r in datos %}
+                    <tr>
+                        <td> {{ r.voting_id }} </td>
+                        <td> {{ r.voter_id }} </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No está logueado como administrador. por favor, <a href="http://localhost:8000/admin/login/?next=/admin/">inicie sesión</a> y vuelva aquí</p>
+        {% endif %}
+    </body>
+</html>
