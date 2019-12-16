@@ -9,7 +9,7 @@ from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import TemplateView
 
-from rest_framework import generics
+from rest_framework import generics, request
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_201_CREATED as ST_201,
@@ -47,7 +47,8 @@ class CensusView(TemplateView):
         #votings = []
 
         #for dato in datos:
-        #    votings.append(mods.get('voting', params={'id': dato.voting_id}))
+        #    votings.append(mods.get('voting', params={'id': dato.voting_name
+        #    }))
            # users.append(mods.get('auth', params={'id': dato.voter_id}))
 
 
@@ -59,7 +60,8 @@ class CensusView(TemplateView):
 
         #for i in range(0, len(datos_usuarios)):
         #    context['datos'].append({})
-        #    context['datos'][i]['voting_id'] = datos_votaciones[i]
+        #    context['datos'][i]['voting_name
+        #    '] = datos_votaciones[i]
         #    context['datos'][i]['voter_id'] = datos[i]['voter_id']
         return context
 
@@ -70,7 +72,8 @@ class CensusView(TemplateView):
         census = Census.objects.all()
 
         for censo in census:
-            export.append([censo.voter_id, censo.voting_id])
+            export.append([censo.voter_id, censo.voting_name
+                           ])
         sheet = excel.pe.Sheet(export)
 
         if format_exp == "csv":
@@ -95,39 +98,48 @@ class CensusLogin(FormView):
         context = self.get_context_data()
 
 
-#class CensusCreate(generics.ListCreateAPIView):
-#    permission_classes = (UserIsStaff,)
+class CensusCreate(generics.ListCreateAPIView):
+    permission_classes = (UserIsStaff,)
 
-        #    def create(self, request, *args, **kwargs):
-        #voting_id = request.data.get('voting_id')
-        #voters = request.data.get('voters')
-        #try:
-        #   for voter in voters:
-        #       census = Census(voting_id=voting_id, voter_id=voter)
-        #       census.save()
-        #except IntegrityError:
-        #   return Response('Error try to create census', status=ST_409)
-        #return Response('Census created', status=ST_201)
+    def create(self, request, *args, **kwargs):
+        voting_name\
+            = request.data.get('voting_name')
+        voters = request.data.get('voters')
+        try:
+            for voter in voters:
+                census = Census(voting_name=voting_name
+                                , voter_id=voter)
+                census.save()
+        except IntegrityError:
+            return Response('Error try to create census', status=ST_409)
+        return Response('Census created', status=ST_201)
 
-    #def list(self, request, *args, **kwargs):
-        #   voting_id = request.GET.get('voting_id')
-        #voters = Census.objects.filter(voting_id=voting_id).values_list('voter_id', flat=True)
-        #return Response({'voters': voters})
+    def list(self, request, *args, **kwargs):
+        voting_name\
+            = request.GET.get('voting_name')
+        voters = Census.objects.filter(voting_name=voting_name
+                                       ).values_list('voter_id', flat=True)
+        return Response({'voters': voters})
 
 
-#class CensusDetail(generics.RetrieveDestroyAPIView):
+class CensusDetail(generics.RetrieveDestroyAPIView):
 
-    #def destroy(self, request, voting_id, *args, **kwargs):
-        #   voters = request.data.get('voters')
-        #census = Census.objects.filter(voting_id=voting_id, voter_id__in=voters)
-        #census.delete()
-        #return Response('Voters deleted from census', status=ST_204)
+    def destroy(self, request, voting_name
+                , *args, **kwargs):
+        voters = request.data.get('voters')
+        census = Census.objects.filter(voting_name
+                                       =voting_name
+                                       , voter_id__in=voters)
+        census.delete()
+        return Response('Voters deleted from census', status=ST_204)
 
-    #def retrieve(self, request, voting_id, *args, **kwargs):
-        #   voter = request.GET.get('voter_id')
-        #try:
-        #   Census.objects.get(voting_id=voting_id, voter_id=voter)
-        #except ObjectDoesNotExist:
-        #   return Response('Invalid voter', status=ST_401)
-        #return Response('Valid voter')
-
+    def retrieve(self, request, voting_name
+                 , *args, **kwargs):
+        voter = request.GET.get('voter_id')
+        try:
+            Census.objects.get(voting_name
+                               =voting_name
+                               , voter_id=voter)
+        except ObjectDoesNotExist:
+            return Response('Invalid voter', status=ST_401)
+        return Response('Valid voter')
