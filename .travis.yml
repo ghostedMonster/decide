@@ -22,5 +22,5 @@ script:
 #safelist
 branches:
   only:
-  -almacenamiento
-  -almacenamiento_panel
+  - almacenamiento
+  - almacenamiento_panel
