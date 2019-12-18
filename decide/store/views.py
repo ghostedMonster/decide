@@ -16,6 +16,7 @@ class StoreView(generics.ListAPIView):
     serializer_class = VoteSerializer
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     filter_fields = ('voting_id', 'voter_id')
+    #filter_fields = ('voting_id', 'voter_id','voter_sex','voter_edad','voter_ip')
 
     def get(self, request):
         self.permission_classes = (UserIsStaff,)
@@ -42,6 +43,7 @@ class StoreView(generics.ListAPIView):
 
         uid = request.data.get('voter')
         vote = request.data.get('vote')
+        
 
         if not vid or not uid or not vote:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
@@ -58,12 +60,20 @@ class StoreView(generics.ListAPIView):
         if perms.status_code == 401:
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
 
+
+        
+        #usex = request.data.get('sex')
+        #uedad = request.data.get('edad')
+        #uip = request.data.get('ip')
+        
         a = vote.get("a")
         b = vote.get("b")
 
         defs = { "a": a, "b": b }
         v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
                                           defaults=defs)
+        #v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,voter_sex=usex, voter_edad=uedad, voter_ip=uip
+         #                                 defaults=defs)
         v.a = a
         v.b = b
 

@@ -53,6 +53,7 @@ class StoreTextCase(BaseTestCase):
             b = random.randint(2, 500)
             self.gen_voting(v)
             random_user = random.choice(users)
+            #falta añadir los campos extra guardados
             user = self.get_or_create_user(random_user)
             self.login(user=user.username)
             census = Census(voting_id=v, voter_id=random_user)
@@ -76,6 +77,8 @@ class StoreTextCase(BaseTestCase):
         }
         response = self.client.post('/store/', data, format='json')
         self.assertEqual(response.status_code, 401)
+
+    # Crear función para comprovar la invalidez de una IP
 
     def test_store_vote(self):
         VOTING_PK = 345
