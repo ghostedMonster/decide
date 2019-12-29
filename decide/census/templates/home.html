@@ -1,0 +1,15 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated and user.is_superuser %}
+  Hi {{ user.username }}! if you want to see the census, click <a href="{% url 'index' %}">here</a>
+    <p><a href="{% url 'logout' %}?next=/census/">logout</a></p>
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
+{% endblock %}

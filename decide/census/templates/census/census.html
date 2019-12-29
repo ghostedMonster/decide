@@ -1,36 +1,41 @@
+{% extends "base.html" %}
+{% load i18n static %}
 
-<html>
-    <head>
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'census/census.css' %}">
-    </head>
-    <body>
-        <h1>Censo</h1>
-        {% if check_user %}
-            <table>
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static 'census/census.css' %}">
+    <title>Censo</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Censo</h1>
+
+
+
+    <div v-if="!signup">
+        <table>
+            <tr>
+                <th>ID de votación</th>
+                <th>ID de votante</th>
+            </tr>
+            {% for r in datos %}
                 <tr>
-                    <th>ID de votación</th>
-                    <th>ID de votante</th>
+                    <td> {{ r.voting_id }} </td>
+                    <td> {{ r.voter_id }} </td>
                 </tr>
-                {% for r in datos %}
-                    <tr>
-                        <td> {{ r.voting_id }} </td>
-                        <td> {{ r.voter_id }} </td>
-                    </tr>
-                {% endfor %}
-            <div class="dropdown">
-            <button class="dropbtn">Exportar Censo</button>
-            <div class="dropdown-content">
-            <a href="/census/resultados/csv">Exportar datos en csv</a> </br>
-            <a href="/census/resultados/ods">Exportar datos en ods</a> </br>
-            <a href="/census/resultados/xlsx">Exportar datos en xlsx</a>
-            </div>
-            </div>
+            {% endfor %}
+        <div class="dropdown">
+        <button class="dropbtn">Exportar Censo</button>
+        <div class="dropdown-content">
+        <a href="/census/resultados/csv">Exportar datos en csv</a>
+        <a href="/census/resultados/ods">Exportar datos en ods</a>
+        <a href="/census/resultados/xlsx">Exportar datos en xlsx</a>
+        </div>
+        </div>
 
-            </table>
-        {% else %}
-            <p>No está logueado como administrador. por favor, <a href="http://localhost:8000/admin/login/?next=/admin/">inicie sesión</a> y vuelva aquí</p>
-        {% endif %}
-    </body>
-
-</html>
+        </table>
+    </div>
+{% endblock %}
