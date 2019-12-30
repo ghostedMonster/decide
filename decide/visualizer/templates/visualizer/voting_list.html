@@ -17,10 +17,10 @@
     <ul>
         {% for voting in voting_list %}
             <li>
-                <h3> {{ voting.name }} </h3>
+                <h3> <a href="../voting/{{voting.id}}"> {{ voting.name }} </a>  </h3>
                 <p> <strong> Pregunta: </strong> {{voting.question}} </p>
                 <p> <strong> Descripción: </strong> {{voting.desc}} </p>
-                <a href="../voting/{{voting.id}}"> Enlace </a>
+                
 
             </li>
             <br/>
