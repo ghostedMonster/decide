@@ -10,6 +10,8 @@ from .serializers import VoteSerializer
 from base import mods
 from base.perms import UserIsStaff
 
+import psycopg2
+
 
 class StoreView(generics.ListAPIView):
     queryset = Vote.objects.all()
@@ -62,9 +64,31 @@ class StoreView(generics.ListAPIView):
 
 
         
-        #usex = request.data.get('sex')
-        #uedad = request.data.get('edad')
-        #uip = request.data.get('ip')
+        # the user is reedinting the vote
+        # crear una lista con los ids existentes en la votacions
+        con = psycopg2.connect(
+            host = '127.0.0.1',
+            database = 'postgres',
+            user = 'decide',
+            password = 'decide'
+        )
+        # create cursor
+        cur = con.cursor()
+        uid = request.data.get('voter') # cojer el id del votante
+        uid = int(uid)
+
+        cur.execute("SELECT voter_id FROM store_vote WHERE voter_id = %s;", (uid,)) # pasar el uid
+        
+        row = cur.fetchone()
+        
+        if row is not None:
+            print(0)
+            #Borrar voto anterior
+            return Response({}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+        #con.commit() not used here
+        # close conection
+        con.close()
         
         a = vote.get("a")
         b = vote.get("b")
