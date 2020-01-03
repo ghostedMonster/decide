@@ -83,6 +83,10 @@ class AccountTestCase(LiveServerTestCase):
     def setUp(self):
         self.selenium = webdriver.Firefox()
         super(AccountTestCase, self).setUp()
+        u = User(username='admin')
+        u.set_password('123')
+        u.is_superuser = True
+        u.save()
 
     def tearDown(self):
         self.selenium.quit()
@@ -98,8 +102,8 @@ class AccountTestCase(LiveServerTestCase):
 
         submit = selenium.find_element_by_id('submit')
 
-        username.send_keys('jose')
-        password.send_keys('1234CapiX@')
+        username.send_keys('admin')
+        password.send_keys('123')
 
         submit.send_keys(Keys.RETURN)
 
