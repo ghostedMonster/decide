@@ -1,11 +1,14 @@
 import random
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import TestCase, LiveServerTestCase
 from rest_framework.test import APIClient
+from selenium.webdriver.common.keys import Keys
 
 from .models import Census
 from base import mods
 from base.tests import BaseTestCase
+from selenium import webdriver
 
 
 class CensusTestCase(BaseTestCase):
@@ -55,7 +58,7 @@ class CensusTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 409)
 
     def test_add_new_voters(self):
-        data = {'voting_id': 2, 'voters': [1,2,3,4]}
+        data = {'voting_id': 2, 'voters': [1, 2, 3, 4]}
         response = self.client.post('/census/', data, format='json')
         self.assertEqual(response.status_code, 401)
 
@@ -73,3 +76,31 @@ class CensusTestCase(BaseTestCase):
         response = self.client.delete('/census/{}/'.format(1), data, format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
+
+
+class AccountTestCase(LiveServerTestCase):
+
+    def setUp(self):
+        self.selenium = webdriver.Firefox()
+        super(AccountTestCase, self).setUp()
+
+    def tearDown(self):
+        self.selenium.quit()
+        super(AccountTestCase, self).tearDown()
+
+    def test_login(self):
+        selenium = self.selenium
+        selenium.get('http://127.0.0.1:8000/census/')
+        link = selenium.find_element_by_link_text('login')
+        link.click()
+        username = selenium.find_element_by_id('id_username')
+        password = selenium.find_element_by_id('id_password')
+
+        submit = selenium.find_element_by_id('submit')
+
+        username.send_keys('jose')
+        password.send_keys('1234CapiX@')
+
+        submit.send_keys(Keys.RETURN)
+
+        assert 'if you want to see the census, click' in selenium.page_source

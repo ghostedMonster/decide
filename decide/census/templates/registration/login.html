@@ -10,7 +10,7 @@
     <form method="post" action="{% url 'login' %}?next=/census/">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Login</button>
+        <button id="submit" type="submit">Login</button>
     </form>
     <!-- Login -->
 {% endblock %}
