@@ -11,6 +11,8 @@ from base import mods
 from base.perms import UserIsStaff
 
 import psycopg2
+from django.http import HttpResponse
+from django.shortcuts import render
 
 
 class StoreView(generics.ListAPIView):
@@ -75,9 +77,10 @@ class StoreView(generics.ListAPIView):
         # create cursor
         cur = con.cursor()
         uid = request.data.get('voter') # cojer el id del votante
-        uid = int(uid)
+        #uid = int(uid)
 
-        cur.execute("SELECT voter_id FROM store_vote WHERE voter_id = %s;", (uid,)) # pasar el uid
+        # Me peta el travis por no encontrar store_vote??? REVISAR
+        cur.execute("SELECT voter_id FROM store_vote WHERE voter_id = %s;", (uid,))
         
         row = cur.fetchone()
         
@@ -96,7 +99,7 @@ class StoreView(generics.ListAPIView):
         defs = { "a": a, "b": b }
         v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
                                           defaults=defs)
-        #v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,voter_sex=usex, voter_edad=uedad, voter_ip=uip
+        #v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,voter_sex=usex, voter_edad=edad, voter_ip=uip
          #                                 defaults=defs)
         v.a = a
         v.b = b
@@ -104,3 +107,18 @@ class StoreView(generics.ListAPIView):
         v.save()
 
         return  Response({})
+
+def ChangevoteView(request):
+    return HttpResponse("<h1>Hellow!<h1>")
+    '''return render (
+        request,
+        'base.html',
+    )'''
+
+def home_view (request, *args, **kwargs):
+    #return HttpResponse("<h1>Hellow!<h1>")
+    return render(request, "home.html", {})
+     
+
+
+
