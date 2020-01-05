@@ -11,7 +11,7 @@ from base import mods
 from base.perms import UserIsStaff
 #para añadir la pagina index.html
 from django.shortcuts import render
-from django.http import HttpResponse
+
 
 
 def home_view(request):
