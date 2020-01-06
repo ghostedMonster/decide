@@ -18,15 +18,17 @@
     <div v-if="!signup">
         <table>
             <tr>
-                <th>ID de votación</th>
-                <th>ID de votante</th>
+                <th>Votación</th>
+                <th>Votante</th>
             </tr>
-            {% for r in datos %}
+
+            {% for r in items %}
                 <tr>
-                    <td> {{ r.voting_id }} </td>
-                    <td> {{ r.voter_id }} </td>
+                    <td> {{ r.0 }} </td>
+                    <td> {{ r.1 }} </td>
                 </tr>
             {% endfor %}
+
         <div class="dropdown">
         <button class="dropbtn">Exportar Censo</button>
         <div class="dropdown-content">

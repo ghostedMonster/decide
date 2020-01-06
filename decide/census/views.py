@@ -23,6 +23,7 @@ from rest_framework.utils import json
 
 from .forms import CensusForm
 from .models import Census
+from django.contrib.auth.models import User
 import django_excel as excel
 
 from base import mods
@@ -44,22 +45,32 @@ class CensusView(TemplateView):
         context['message'] = 'Aqui estamos'
         datos = Census.objects.all()
 
-        #users = []
-        #votings = []
+        users = []
+        votings = []
 
-        #for dato in datos:
-        #    votings.append(mods.get('voting', params={'id': dato.voting_id}))
-           # users.append(mods.get('auth', params={'id': dato.voter_id}))
+        for dato in datos:
+            votings.append(mods.get('voting', params={'id': dato.voting_id}))
+            users.append(User.objects.get(id=dato.voter_id))
+        users_list = list(users)
 
 
-        #datos_usuarios = []
-        #datos_votaciones = []
-        #for i in votings:
-        #    datos_votaciones.append(i[0]['name'])
-        context['datos'] = datos
+        datos_usuarios = []
+        datos_votaciones = []
+        for i in votings:
+            datos_votaciones.append(i[0]['name'])
 
-        #for i in range(0, len(datos_usuarios)):
-        #    context['datos'].append({})
+        for i in users_list:
+            datos_usuarios.append(i.username)
+
+        context['voting'] = datos_votaciones
+        context['users'] = datos_usuarios
+
+        items = zip(datos_votaciones, datos_usuarios)
+
+        context['items'] = items
+
+#        for i in range(0, len(datos_usuarios)):
+ #           context['datos'].append({})
         #    context['datos'][i]['voting_id'] = datos_votaciones[i]
         #    context['datos'][i]['voter_id'] = datos[i]['voter_id']
         return context

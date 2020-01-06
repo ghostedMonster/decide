@@ -5,13 +5,11 @@ from django.test import TestCase, LiveServerTestCase
 from rest_framework.test import APIClient
 from selenium.webdriver.common.keys import Keys
 
-from .models import Census
-from base import mods
-from base.tests import BaseTestCase
+from census.models import Census
 from selenium import webdriver
 
 
-class CensusTestCase(BaseTestCase):
+class CensusTestCase(TestCase):
 
     def setUp(self):
         super().setUp()
@@ -81,12 +79,12 @@ class CensusTestCase(BaseTestCase):
 class AccountTestCase(LiveServerTestCase):
 
     def setUp(self):
+        self.u = User(username='admin')
+        self.u.set_password('123')
+        self.u.is_superuser = True
+        self.u.save()
         self.selenium = webdriver.Firefox()
         super(AccountTestCase, self).setUp()
-        u = User(username='admin')
-        u.set_password('123')
-        u.is_superuser = True
-        u.save()
 
     def tearDown(self):
         self.selenium.quit()
@@ -106,5 +104,6 @@ class AccountTestCase(LiveServerTestCase):
         password.send_keys('123')
 
         submit.send_keys(Keys.RETURN)
-
-        assert 'if you want to see the census, click' in selenium.page_source
+        print('current url:')
+        print(selenium.current_url)
+        assert selenium.current_url == 'http://127.0.0.1:8000/census/'
