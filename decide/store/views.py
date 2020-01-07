@@ -115,7 +115,7 @@ def ChangevoteView(request):
         'base.html',
     )'''
 
-def home_view (request, *args, **kwargs):
+def Changevote (request, *args, **kwargs):
     #return HttpResponse("<h1>Hellow!<h1>")
     return render(request, "home.html", {})
      
