@@ -62,48 +62,49 @@
             }
         })
     </script>
-    <canvas id="myChart" width="500" height="500"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'bar',
+    <div id="graph1" style="width:30%; height: 30%;  padding: 10px;">
+        <canvas id="myChart" width="500" height="500"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'horizontalBar',
 
-            // The data for our dataset
-            data: {
-                labels: ['Uno', 'Dos'],
-                datasets: [{
-                    label: 'Pruebas',
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.5)',
-                        'rgba(54, 162, 235, 0.5)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)'
-                    ],
-                    data: [55, 100],
-                    borderWidth: 1
-                }]
-            },
-
-            // Configuration options go here
-            options: {
-                scales:{
-                    yAxes:[{
-                        ticks:{
-                            beginAtZero:true
-                        }
+                // The data for our dataset
+                data: {
+                    labels: ['Uno', 'Dos'],
+                    datasets: [{
+                        label: 'Pruebas',
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        data: [55, 100],
+                        borderWidth: 1
                     }]
                 },
-                animation: {
-                    easing: 'linear',
-                    duration: 3000
-                } 
-            }
-        });
-    </script>
-    
+
+                // Configuration options go here
+                options: {
+                    scales:{
+                        yAxes:[{
+                            ticks:{
+                                beginAtZero:true
+                            }
+                        }]
+                    },
+                    animation: {
+                        easing: 'linear',
+                        duration: 1000
+                    } 
+                }
+            });
+        </script>
+    </div>
 </body>
 {% endblock %}
