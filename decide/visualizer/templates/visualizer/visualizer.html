@@ -30,6 +30,7 @@
                             <th>Opción</th>
                             <th>Puntuación</th>
                             <th>Votos</th>
+                            <th>Porcentaje de votos</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,9 +38,19 @@
                             <th>[[opt.option]]</th>
                             <td>[[opt.postproc]]</td>
                             <td class="text-muted">[[opt.votes]]</td>
-                        </tr>
+
+                            <td>{{numero}}</td>
+
+                        </tr>   
                     </tbody>
                 </table>
+                
+                La participación del censo ha sido del {{pC}}%.{{edad}}{{profesion}}{{region}}{{estudios}}
+                
+                {% for key,value in edad.items %}
+                <li> {{ key }} -> {{value}}</li>
+            {% endfor %}
+
             </div>
 
         </div>
