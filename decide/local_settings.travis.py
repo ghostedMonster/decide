@@ -33,7 +33,7 @@ DATABASES = {
         'NAME': 'test_decide',
         'USER': 'decide',
         'PASSWORD':'decide',
-        'HOST': 'http://localhost:8000',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
