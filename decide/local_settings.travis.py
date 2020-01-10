@@ -13,6 +13,8 @@ MODULES = [
     'voting',
 ]
 
+BASEURL = 'http://localhost:8000'
+
 APIS = {
     'authentication': BASEURL,
     'base': BASEURL,
@@ -24,8 +26,6 @@ APIS = {
     'visualizer': BASEURL,
     'voting': BASEURL,
 }
-
-BASEURL = 'http://localhost:8000/'
 
 DATABASES = {
     'default': {
