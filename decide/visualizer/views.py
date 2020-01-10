@@ -4,8 +4,9 @@ from django.conf import settings
 from django.http import Http404
 from voting.models import Voting
 from census.models import Census
-from django.db.models import Count
+from django.db.models import Count, Sum
 from authentication.models import Voter
+from store.models import Vote
 
 
 from base import mods
@@ -21,11 +22,13 @@ class VisualizerView(TemplateView):
         try:
             r = mods.get('voting', params={'id': vid})
             r1 = Voting.objects.filter(id=vid)[0]
-            r2 = Voting.objects.filter(id=vid).aggregate(num_votes=Count('postproc'))
+            r2 = Vote.objects.filter(voting_id=vid).aggregate(num_votes=Count('voter_id'))
+            
             context['voting'] = json.dumps(r[0])
             numero=[]
 
             vTotal=r2['num_votes']
+     
             for opt in r1.postproc:
                 nv=(opt['votes']/r2['num_votes'])*100
                 numero.append(nv)
