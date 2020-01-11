@@ -6,34 +6,36 @@
          href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet"
          href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
-    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+    <link type="text/css" rel="stylesheet" href="{% static "booth/visualizerStyles.css" %}" />
 {% endblock %}
 
 
 {% block content %}
-    <h1>Lista de votaciones</h1>
-    
-    {% if voting_list %}
-    <ul>
-        {% for voting in voting_list %}
-            <li>
-                <h3> <a href="../voting/{{voting.id}}"> {{ voting.name }} </a>  </h3>
-                <p> <strong> Pregunta: </strong> {{voting.question}} </p>
-                <p> <strong> Descripción: </strong> {{voting.desc}} </p>
-                
+    <br/><br/>
+    <h1> Lista de votaciones </h1>
+    <br/><br/><br/>
 
-            </li>
-            <br/>
+
+    {% if voting_list %}
+    <div class="list-group mx-auto" style="width: 800px;">
+        {% for voting in voting_list %}
+            <a href="../voting/{{voting.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{voting.name}}</h5>
+                    
+                </div>
+                <small>{{voting.desc}}</small>
+                <p class="mb-1">Pregunta: {{voting.question}}</p>
+            </a>
+            <br/><br/><br/><br/>
         {% endfor %}
 
-    </ul>
+    </div>
     {% else %}
         <p>No hay votaciones en el sistema.</p>
-    {% endif %}    
+    {% endif %}   
 
 
-------- <br/>
-{{votings}}
 
 
 {% endblock %}
