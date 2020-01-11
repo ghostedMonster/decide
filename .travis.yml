@@ -24,7 +24,7 @@ notifications:
     on_failure: never
 deploy:
   provider: heroku
-  app: giratina-visualizacion
+  app: feature-visualizacion-travis
   on: 
     branch: develop
   strategy: git
