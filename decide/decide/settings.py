@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-#import django_heroku
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -71,19 +71,19 @@ MODULES = [
     'voting',
 ]
 
-#BASEURL = 'http://giratina-visualizacion.herokuapp.com/'
+BASEURL = 'http://giratina-visualizacion.herokuapp.com/'
 
-#APIS = {
- #   'authentication': BASEURL,
-  #  'base': BASEURL,
-  #  'booth': BASEURL,
-  #  'census': BASEURL,
-  #  'mixnet': BASEURL,
-  #  'postproc': BASEURL,
-  #  'store': BASEURL,
-  #  'visualizer': BASEURL,
-  #  'voting': BASEURL,
-#}
+APIS = {
+    'authentication': BASEURL,
+    'base': BASEURL,
+    'booth': BASEURL,
+    'census': BASEURL,
+    'mixnet': BASEURL,
+    'postproc': BASEURL,
+    'store': BASEURL,
+    'visualizer': BASEURL,
+    'voting': BASEURL,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -193,4 +193,4 @@ if os.path.exists("config.jsonnet"):
 
 
 INSTALLED_APPS = INSTALLED_APPS + MODULES
-#django_heroku.settings(locals())
+django_heroku.settings(locals())
