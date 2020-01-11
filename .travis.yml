@@ -10,14 +10,11 @@ before_script:
   - psql -U postgres -c "ALTER USER decide CREATEDB"
 language: python
 python:
-  - "3.6"
+- '3.6'
 install:
-  - pip install -r requirements.txt
-  - pip install codacy-coverage
+- pip install -r requirements.txt
 script:
-  - cd decide
-  - cp travis_local_settings.py local_settings.py
-  - python ./manage.py test --keepdb
-#  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-#  - coverage xml
-#  - python-codacy-coverage -r coverage.xml
+- cd decide
+- python ./manage.py makemigrations
+- python ./manage.py migrate
+- python ./manage.py test --keepdb
