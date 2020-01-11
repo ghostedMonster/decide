@@ -48,11 +48,13 @@ class VisualizerView(TemplateView):
             estudios={}
             region={}
             profesion={}
+            sexo={}
 
             for u in Census.objects.filter(voting_id=r1.id):
 
                 nc=nc+1.0
-                e1=Voter.objects.filter(Usuario_id=u.voter_id)[0].edad
+                votante1=Voter.objects.filter(Usuario_id=u.voter_id)[0]
+                e1=votante1.edad
                 e1=str(e1)
                 print(e1)
         
@@ -62,9 +64,10 @@ class VisualizerView(TemplateView):
                     edad[e1]=str(1)
 
                 try: 
-                    estudios1=Voter.objects.filter(Usuario_id=u.voter_id)[0].estudios
-                    profesion1=Voter.objects.filter(Usuario_id=u.voter_id)[0].profesion
-                    region1=Voter.objects.filter(Usuario_id=u.voter_id)[0].region
+                    estudios1=votante1.estudios
+                    profesion1=votante1.profesion
+                    region1=votante1.region
+                    sexo1=votante1.sexo
 
                 except:
                     print("Something went wrong")
@@ -84,6 +87,10 @@ class VisualizerView(TemplateView):
                 else:
                     region[region1]=str(1)
                 
+                if(sexo.get(sexo1) is not None):
+                    sexo[sexo1]=str(int(sexo.get(sexo1)) + 1)
+                else:
+                    sexo[sexo1]=str(1)                
 
             nc=vTotal/nc
 
@@ -92,7 +99,8 @@ class VisualizerView(TemplateView):
             context['profesion'] = profesion
             context['region'] = region
             context['estudios'] = estudios
-            print(edad)
+            context['sexo'] = sexo
+
             ##Sacar el user a partir del voter id 
             #User.objects.filter(id=1)[0].username
   
