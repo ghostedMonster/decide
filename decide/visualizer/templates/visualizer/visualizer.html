@@ -34,20 +34,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="opt in voting.postproc" :key="opt.number">
+                        <tr v-for="(opt,index) in voting.postproc" :key="opt.number">
                             <th>[[opt.option]]</th>
                             <td>[[opt.postproc]]</td>
                             <td class="text-muted">[[opt.votes]]</td>
-
-                            <td>{{numero}}</td>
-
-                        </tr>   
+                            <td>[[opt.porcentaje]]</td>
+                            
+                        </tr>
+                        </template>
                     </tbody>
-                </table>
+                </table>             
+              
+            La participación del censo ha sido del {{pC}}%.{{edad}}{{profesion}}{{region}}{{estudios}}
                 
-                La participación del censo ha sido del {{pC}}%.{{edad}}{{profesion}}{{region}}{{estudios}}
-                
-                {% for key,value in edad.items %}
+            {% for key,value in edad.items %}
                 <li> {{ key }} -> {{value}}</li>
             {% endfor %}
 
@@ -66,7 +66,7 @@
     <script language="javascript" src="js/jquery-1.2.6.min.js"></script>
 
     <script>
-        var voting = {{voting|safe}};
+        var voting = {{voting|safe}}
         var app = new Vue({
             delimiters: ['[[', ']]'],
             el: '#app-visualizer',
@@ -81,7 +81,7 @@
     <div id="graph" style="width:30%; height: 30%;  padding: 10px;">
         <canvas id="myChart" width="500" height="500"></canvas>
         <script>
-            var numero = 1;
+            var numgraph = 1;
             var ctx = document.getElementById('myChart').getContext('2d');
             var chart = new Chart(ctx, {
                 // The type of chart we want to create
@@ -91,7 +91,6 @@
                 data: {
                     labels: ['Uno', 'Dos'],
                     datasets: [{
-                        label: 'Pruebas',
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.5)',
                             'rgba(54, 162, 235, 0.5)'
@@ -100,7 +99,7 @@
                             'rgba(255, 99, 132, 1)',
                             'rgba(54, 162, 235, 1)'
                         ],
-                        data: [55, 100],
+                        data: {{numero}},
                         borderWidth: 1
                     }]
                 },
@@ -130,7 +129,7 @@
     <script>
         function scriptGrafico(){
             chart.destroy();
-            if(numero == 1){
+            if(numgraph == 1){
             chart = new Chart(ctx, {
                 // The type of chart we want to create
                 type: 'horizontalBar',
@@ -173,7 +172,7 @@
                     } 
                 }
             });
-            numero = 2;
+            numgraph = 2;
         }else{
             chart = new Chart(ctx, {
                 // The type of chart we want to create
@@ -192,7 +191,7 @@
                             'rgba(255, 99, 132, 1)',
                             'rgba(54, 162, 235, 1)'
                         ],
-                        data: [55, 100],
+                        data: {{numero}},
                         borderWidth: 1
                     }]
                 },
@@ -217,7 +216,7 @@
                     } 
                 }
             });
-            numero = 1;
+            numgraph = 1;
         }
         }
     </script>

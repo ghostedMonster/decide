@@ -24,7 +24,6 @@ class VisualizerView(TemplateView):
             r1 = Voting.objects.filter(id=vid)[0]
             r2 = Vote.objects.filter(voting_id=vid).aggregate(num_votes=Count('voter_id'))
             
-            context['voting'] = json.dumps(r[0])
             numero=[]
 
             vTotal=r2['num_votes']
@@ -35,6 +34,9 @@ class VisualizerView(TemplateView):
 
             
             context['numero'] = numero
+            for i in range(0, len(numero)):
+                r[0]['postproc'][i]['porcentaje'] = numero[i]
+            context['voting'] = json.dumps(r[0])
             ##Sacar el objeto census de la votacion y su voter id, habria que hacer un for con los [i]
             #Census.objects.filter(voting_id=1)[0].voter_id
 
