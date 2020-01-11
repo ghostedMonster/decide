@@ -30,13 +30,12 @@ BASEURL = 'http://localhost:8000'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test_decide',
-        'USER': 'decide',
-        'PASSWORD':'decide',
+        'NAME': 'postgres',
+        'USER': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 
 # number of bits for the key, all auths should use the same number of bits
-KEYBITS = 170
+KEYBITS = 128
