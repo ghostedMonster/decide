@@ -7,6 +7,12 @@
     <link type="text/css" rel="stylesheet"
          href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
     <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+    <script>
+    function generaTelegram(){
+        window.open("{{shareLink}}", '_blank');
+    }
+    </script>
+    
 {% endblock %}
 
 {% block content %}
@@ -44,7 +50,9 @@
                         </tr>   
                     </tbody>
                 </table>
-                
+                <img onclick="generaTelegram()" src="https://img.icons8.com/plasticine/2x/telegram-app.png" style="width:5%; height:auto;"/><a href="#" onclick="generaTelegram()">Compartir en Telegram</a>
+                <br/>
+
                 La participación del censo ha sido del {{pC}}%.{{edad}}{{profesion}}{{region}}{{estudios}}{{sexo}}
                 
                 {% for key,value in edad.items %}
