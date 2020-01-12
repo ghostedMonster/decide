@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% load i18n static %}
 
-{% block extrahead %}
+{% block extra
+ %}
     <link type="text/css" rel="stylesheet"
          href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet"
@@ -19,9 +20,9 @@
         <div class="voting container">
             <h1>[[ voting.id ]] - [[ voting.name ]]</h1>
 
-            <h2 v-if="!voting.start_date">Votación no comenzada</h2>
+            <!-- <h2 v-if="!voting.start_date">Votación no comenzada</h2> 
             <h2 v-else-if="!voting.end_date">Votación en curso</h2>
-            <div v-else>
+            <div v-else> -->
                 <h2 class="heading">Resultados:</h2>
 
                 <table class="table table-bordered table-striped">
@@ -43,6 +44,7 @@
                         </tr>
                         </template>
                     </tbody>
+
                 </table>             
             <br/>
             <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -50,6 +52,7 @@
             <h4>La participación del censo ha sido del {{pC}}%</h4>
 
             </div>
+
 
         </div>
     </div>
