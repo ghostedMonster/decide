@@ -38,7 +38,8 @@ class VisualizerView(TemplateView):
 
             shareLink=""
             shareLink=genera_telegram(self.request, r1.name, r1.postproc, vid)
-            print(2)
+            url, title, description= meta(self.request, r1.name, r1.postproc, vid)
+
      
             for opt in r1.postproc:
                 nv=(opt['votes']/r2['num_votes'])*100
@@ -126,7 +127,9 @@ class VisualizerView(TemplateView):
             context['sexoValues'] = list(sexo.values())
 
             context['shareLink'] = shareLink
-      
+            context['title'] = title
+            context['description'] = description
+            context['url'] = url
             ##Sacar el user a partir del voter id 
             #User.objects.filter(id=1)[0].username
   
@@ -190,11 +193,11 @@ def genera_telegram(request, votingName, opciones, vid):
 
         texto=texto + 'Visita ' + '"' +',{"tag":"a","attrs":{"href":"' + url_decide + '"},"children":["' + url_decide + '"]},"' + ' para mas información.'
         contenido='[{"tag":"p","children":[' + '"' + texto + '"' + ']}]'
-        print(contenido)
+
 
         url_create = api_url_base + 'createPage?access_token=' + token + '&title=' + str(votingName) + '&author_name=Decide&content=' +  contenido + '&return_content=true'
         
-        print(url_create)
+
 
         response=requests.get(url_create)
         shareLink=""
@@ -202,11 +205,22 @@ def genera_telegram(request, votingName, opciones, vid):
         if response.status_code==200:
             respuesta=json.loads(response.text)
             respuesta=respuesta["result"]
-            print(respuesta)
+
 
             post=respuesta["url"]
 
-            print(post)
+        
             shareLink='https://telegram.me/share/url?url=' + post +'&text=' + 'Quería compartir contigo los resultados de esta votación:'
 
         return shareLink
+
+def meta(request, votingName, opciones, vid):
+    title="Los resultados de la encuesta " + votingName + ", son los sigientes: " + "\n"
+
+    for o in opciones:
+        results=str(o['option']) +": " + str(o['votes']) + " voto/s. " + "\n"
+
+    url_decide = request.build_absolute_uri()
+    results=results + 'Visita ' + url_decide + ' para mas información.'
+
+    return url_decide, title, results
