@@ -37,21 +37,21 @@ class VisualizerView(TemplateView):
 
     def descargaPDF(request):
         
-        ## Create the HttpResponse object with the appropriate PDF headers.
+        ## Creamos el objeto HttpResponse con las apropiadas cabeceras PDF
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="datos_decide.pdf"'
 
         logo = ImageReader('https://images.squarespace-cdn.com/content/v1/531365fbe4b060dc36b4afa6/1553794264094-CFUAKKDDNYRG14W2CIXU/ke17ZwdGBToddI8pDm48kHhlTY0to_qtyxq77jLiHTtZw-zPPgdn4jUwVcJE1ZvWhcwhEtWJXoshNdA9f1qD7Xj1nVWs2aaTtWBneO2WM-sIRozzR0FWTsIsFVspibqsB7eL2qd43SOgdOvkAOY75w/django.png?format=300w')
-        ## Create the PDF object, using the response object as its "file."
+        ## Creamos el objeto PDF 
         p = canvas.Canvas(response)
+        #A partir de aquí se introducen los elementos que se imprimirán en PDF
 
-        ## Draw things on the PDF. Here's where the PDF generation happens.
-        ## See the ReportLab documentation for the full list of functionality.
+        ## Dibujamos la imagen plantilla que irá en la cabecera 
         p.drawImage(logo, -20, 600, mask='auto')
         
-        #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
+        #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica.
         p.setFont("Helvetica", 16)
-        #Dibujamos una cadena en la ubicación X,Y especificada
+        #Dibujamos una cadena en la ubicación X,Y especificada.
         p.drawString(230, 790, u"PLATAFORMA DECIDE")
         p.setFont("Helvetica", 14)
         p.drawString(200, 770, u"REPORTE DE DATOS DE VOTANTES")
@@ -66,7 +66,7 @@ class VisualizerView(TemplateView):
         p.setFont("Helvetica", 10)
         p.drawString(275, 560, u"Desviación: 0.321457")
 
-        ## Close the PDF object cleanly, and we're done.
+        ## Cerramos el objeto PDF.
         p.showPage()
         p.save()
         return response              
