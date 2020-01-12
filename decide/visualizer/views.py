@@ -166,6 +166,41 @@ class VisualizerView(TemplateView):
         response = requests.post(url, params=params)
         return render(request, 'visualizer/visualizador.html', {'porcentajes': porcentajes, 'votos': votos, 'votantes':votantes, 'desviacion':desviacion})
     
+    def descargaPDF(request):
+        
+        ## Creamos el objeto HttpResponse con las apropiadas cabeceras PDF
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="datos_decide.pdf"'
+
+        logo = ImageReader('https://images.squarespace-cdn.com/content/v1/531365fbe4b060dc36b4afa6/1553794264094-CFUAKKDDNYRG14W2CIXU/ke17ZwdGBToddI8pDm48kHhlTY0to_qtyxq77jLiHTtZw-zPPgdn4jUwVcJE1ZvWhcwhEtWJXoshNdA9f1qD7Xj1nVWs2aaTtWBneO2WM-sIRozzR0FWTsIsFVspibqsB7eL2qd43SOgdOvkAOY75w/django.png?format=300w')
+        ## Creamos el objeto PDF 
+        p = canvas.Canvas(response)
+        #A partir de aquí se introducen los elementos que se imprimirán en PDF
+
+        ## Dibujamos la imagen plantilla que irá en la cabecera 
+        p.drawImage(logo, -20, 600, mask='auto')
+        
+        #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica.
+        p.setFont("Helvetica", 16)
+        #Dibujamos una cadena en la ubicación X,Y especificada.
+        p.drawString(230, 790, u"PLATAFORMA DECIDE")
+        p.setFont("Helvetica", 14)
+        p.drawString(200, 770, u"REPORTE DE DATOS DE VOTANTES")
+        p.setFont("Helvetica", 10)
+        p.drawString(275, 680, u"Porcentaje 1: 0.25")
+        p.setFont("Helvetica", 10)
+        p.drawString(275, 650, u"Porcentaje 2: 0.75")
+        p.setFont("Helvetica", 10)
+        p.drawString(275, 620, u"Votos: 1357")
+        p.setFont("Helvetica", 10)
+        p.drawString(275, 590, u"Votantes: 1521")
+        p.setFont("Helvetica", 10)
+        p.drawString(275, 560, u"Desviación: 0.321457")
+
+        ## Cerramos el objeto PDF.
+        p.showPage()
+        p.save()
+        return response              
 class VotingListView(ListView):
     model = Voting
     context_object_name = 'voting_list'  
