@@ -101,10 +101,3 @@ ENV/
 .mypy_cache/
 
 .vagrant
-
-#for pull requests
-.travis.yml
-Procfile
-settings.py
-travis_local_settings.py
-requirements.txt
