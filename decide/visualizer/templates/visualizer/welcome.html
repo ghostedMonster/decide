@@ -6,32 +6,29 @@
          href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet"
          href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
-    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+    <link type="text/css" rel="stylesheet" href="{% static "booth/visualizerStyles.css" %}" />
 {% endblock %}
 
+
 {% block content %}
-  <h1>Nombre: {{ voting.name }}</h1>
-    {% if voting.desc %}
-        <p><strong>Descripción:</strong> {{ voting.desc }}</p>
-    {% endif %}
-    {% if voting.start_date %}
-        <p><strong>Fecha de inicio:</strong> {{ voting.start_date }}</p> 
-    {% endif %}
-    {% if voting.end_date %}
-        <p><strong>Fecha de fin:</strong> {{ voting.end_date }}</p>  
-    {% endif %}
-  
-  
-  <p><strong>Pregunta:</strong> {{ voting.question }}</p>  
-  <p><strong>Votos:</strong> {{ voting.votes }}</p>  
-  
-    <!-- 
-  <p><strong>Genre:</strong> 
-    {% for genre in book.genre.all %}
-     {{ genre }}
-    {% if not forloop.last %}, {% endif %}{% endfor %}</p>  
-    -->
-  
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h1>Bienvenido/a a Decide</h1>
+<br/>
+
+<div id="buttons">
+    <a href="/visualizer/votings" class="btn blue"> Visualizador </a>
+    <a href="/store" class="btn red"> Almacenamiento </a>
+    <a href="/census" class="btn green"> Censo </a>
+    <a href="/voting" class="btn yellow"> Censo </a>
+    
+
+</div>
+
+
 {% endblock %}
 
 {% block extrabody %}

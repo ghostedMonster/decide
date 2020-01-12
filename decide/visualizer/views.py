@@ -16,6 +16,9 @@ from voting.models import Voting
 from base import mods
 from django.shortcuts import render
 
+import requests
+import json
+
 class VisualizerView(TemplateView):
     template_name = 'visualizer/visualizer.html'
 
@@ -31,6 +34,10 @@ class VisualizerView(TemplateView):
             numero=[]
 
             vTotal=r2['num_votes']
+
+            shareLink=""
+            shareLink=genera_telegram(self.request, r1.name, r1.postproc, vid)
+            print(2)
      
             for opt in r1.postproc:
                 nv=(opt['votes']/r2['num_votes'])*100
@@ -62,7 +69,6 @@ class VisualizerView(TemplateView):
                 votante1=Voter.objects.filter(Usuario_id=u.voter_id)[0]
                 e1=votante1.edad
                 e1=str(e1)
-                print(e1)
         
                 if(edad.get(e1) is not None):
                     edad[e1]=str(int(edad.get(e1)) + 1)
@@ -97,6 +103,10 @@ class VisualizerView(TemplateView):
                 else:
                     sexo[sexo1]=str(1)  
                 
+                if(sexo.get(sexo1) is not None):
+                    sexo[sexo1]=str(int(sexo.get(sexo1)) + 1)
+                else:
+                    sexo[sexo1]=str(1)                
 
             nc=vTotal/nc
 
@@ -113,6 +123,9 @@ class VisualizerView(TemplateView):
             context['sexo'] = sexo
             context['sexoKeys'] = list(sexo.keys())
             context['sexoValues'] = list(sexo.values())
+
+            context['shareLink'] = shareLink
+      
             ##Sacar el user a partir del voter id 
             #User.objects.filter(id=1)[0].username
   
@@ -149,5 +162,36 @@ class VotingDetailView(DetailView):
 
         #voting_id=get_object_or_404(Voting, pk=pk)
         
+      
+def genera_telegram(request, votingName, opciones, vid):
+        token='d180fa8b90d4eebace7489dccf91fd5df2cec4ab21b93ab99038267a4c7d'
+        api_url_base='https://api.telegra.ph/'
+        texto="Los resultados de la encuesta " + votingName + ", son los sigientes: " + "\n"
+
+        for o in opciones:
+            texto=texto + str(o['option']) +": " + str(o['votes']) + " voto/s. " + "\n"
+
+        url_decide = request.build_absolute_uri()
+
+        texto=texto + 'Visita ' + '"' +',{"tag":"a","attrs":{"href":"' + url_decide + '"},"children":["' + url_decide + '"]},"' + ' para mas información.'
+        contenido='[{"tag":"p","children":[' + '"' + texto + '"' + ']}]'
+        print(contenido)
+
+        url_create = api_url_base + 'createPage?access_token=' + token + '&title=' + str(votingName) + '&author_name=Decide&content=' +  contenido + '&return_content=true'
         
-    
+        print(url_create)
+
+        response=requests.get(url_create)
+        shareLink=""
+
+        if response.status_code==200:
+            respuesta=json.loads(response.text)
+            respuesta=respuesta["result"]
+            print(respuesta)
+
+            post=respuesta["url"]
+
+            print(post)
+            shareLink='https://telegram.me/share/url?url=' + post +'&text=' + 'Quería compartir contigo los resultados de esta votación:'
+
+        return shareLink

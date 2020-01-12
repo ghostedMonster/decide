@@ -15,6 +15,8 @@ REGION_CHOICES = [('Galicia','Galicia'), ('Principado de Asturias','Principado d
                   ('Region de Murcia','Región de Murcia'), ('Islas Canarias','Islas Canarias')]
 SEX_CHOICES= [('Hombre', 'Hombre'), ('Mujer', 'Mujer'), ('Prefiero no decirlo', 'Prefiero no decirlo')]
 
+SEX_CHOICES= [('Hombre', 'Hombre'), ('Mujer', 'Mujer'), ('Prefiero no decirlo', 'Prefiero no decirlo')]
+
 def validator_edad(edad):
     if edad > 120 or edad<0:
         raise ValidationError(

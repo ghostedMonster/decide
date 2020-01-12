@@ -7,6 +7,12 @@
     <link type="text/css" rel="stylesheet"
          href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
     <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+    <script>
+    function generaTelegram(){
+        window.open("{{shareLink}}", '_blank');
+    }
+    </script>
+    
 {% endblock %}
 
 {% block content %}
@@ -39,12 +45,18 @@
                             <td>[[opt.porcentaje]]</td>
                         </tr>
                     </tbody>
-                </table>             
-            <br/>
-            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-            <script language="javascript" src="js/jquery-1.2.6.min.js"></script>
-            <h4>La participación del censo ha sido del {{pC}}%</h4>
+                </table>
+                <img onclick="generaTelegram()" src="https://img.icons8.com/plasticine/2x/telegram-app.png" style="width:5%; height:auto;"/><a href="#" onclick="generaTelegram()">Compartir en Telegram</a>
+                <br/>
+
+                La participación del censo ha sido del {{pC}}%.{{edad}}{{profesion}}{{region}}{{estudios}}{{sexo}}
+                
+                {% for key,value in edad.items %}
+                <li> {{ key }} -> {{value}}</li>
+            {% endfor %}
+
             </div>
+
         </div>
     </div>
     
@@ -55,6 +67,8 @@
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
     <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script language="javascript" src="js/jquery-1.2.6.min.js"></script>
     
 
     <script>
@@ -67,6 +81,7 @@
             }
         })
     </script>
+    <h4>La participación del censo ha sido del {{pC}}%</h4>
     <input type="button" style="margin:auto;"onClick="graficoPorcentaje()" value="Porcentaje de votos por opción"/>
     <input type="button" style="margin:auto;"onClick="graficoEdad()" value="Número de votos por edad"/>
     <input type="button" style="margin:auto;"onClick="graficoRegion()" value="Número de votos por región"/>
