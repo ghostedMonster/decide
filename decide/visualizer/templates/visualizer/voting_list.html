@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static "booth/visualizerStyles.css" %}" />
+{% endblock %}
+
+
+{% block content %}
+    <br/><br/>
+    <h1> Lista de votaciones </h1>
+    <br/><br/><br/>
+
+
+    {% if voting_list %}
+    <div class="list-group mx-auto" style="width: 800px;">
+        {% for voting in voting_list %}
+            <a href="../voting/{{voting.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{voting.name}}</h5>
+                    
+                </div>
+                <small>{{voting.desc}}</small>
+                <p class="mb-1">Pregunta: {{voting.question}}</p>
+            </a>
+            <br/><br/><br/><br/>
+        {% endfor %}
+
+    </div>
+    {% else %}
+        <p>No hay votaciones en el sistema.</p>
+    {% endif %}   
+
+
+
+
+{% endblock %}
+
+{% block extrabody %}
+    <!-- Vuejs -->
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
+    <script>
+        var voting = {{voting|safe}};
+        var app = new Vue({
+            delimiters: ['[[', ']]'],
+            el: '#app-visualizer',
+            data: {
+                voting: voting
+            }
+        })
+    </script>
+</body>
+{% endblock %}
