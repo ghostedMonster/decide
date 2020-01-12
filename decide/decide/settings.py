@@ -122,10 +122,10 @@ WSGI_APPLICATION = 'decide.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'decide',
-        'USER': 'decide',
-        'PASSWORD': 'decide',
-        'HOST': 'giratina-visualizacion.herokuapp.com',
+        'NAME': 'dei6ti9jc06ag3',
+        'USER': 'iswqbzclpbahjg',
+        'PASSWORD': '86974f1ffd78e7ae3aeb675e7b4dbdb31ee7763afd1ff4b29aaf6164f6fb4650',
+        'HOST': 'ec2-54-246-105-238.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
