@@ -122,7 +122,9 @@ class VisualizerView(TemplateView):
             context['edadValues'] = list(edad.values())
             context['profesion'] = profesion
             context['region'] = region
-            region['No especificado'] = region.pop("")
+            regionKeys = list(region.keys())
+            if "" in regionKeys:
+                region['No especificado'] = region.pop("")
             context['regionKeys'] = list(region.keys())
             context['regionValues'] = list(region.values())
             context['estudios'] = estudios
