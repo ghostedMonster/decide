@@ -44,8 +44,8 @@
                         </template>
                     </tbody>
                 </table>             
-              
-            La participación del censo ha sido del {{pC}}%.{{edad}}{{profesion}}{{region}}{{estudios}}
+            <br/>
+            La participación del censo ha sido del {{pC}}%.{{edad}}{{profesion}}{{region}}{{estudios}}{sexo}
                 
             {% for key,value in edad.items %}
                 <li> {{ key }} -> {{value}}</li>
@@ -78,49 +78,35 @@
     
     
 
-    <div id="graph" style="width:30%; height: 30%;  padding: 10px;">
+    <div id="graph" style="width:30%; height: 30%;  padding: 10px; margin:auto;">
         <canvas id="myChart" width="500" height="500"></canvas>
         <script>
             var numgraph = 1;
             var ctx = document.getElementById('myChart').getContext('2d');
             var chart = new Chart(ctx, {
                 // The type of chart we want to create
-                type: 'horizontalBar',
-
+                type: 'pie',
                 // The data for our dataset
                 data: {
-                    labels: ['Uno', 'Dos'],
+                    labels: {{opciones|safe}},
                     datasets: [{
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.5)',
-                            'rgba(54, 162, 235, 0.5)'
+                            'rgba(255, 0, 0, 0.8)',
+                            'rgba(54, 162, 235, 0.7)'
                         ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)'
-                        ],
-                        data: {{numero}},
-                        borderWidth: 1
+                        data: {{numero|safe}},
                     }]
                 },
 
                 // Configuration options go here
                 options: {
-                    scales:{
-                        yAxes:[{
-                            ticks:{
-                                beginAtZero:true
-                            }
-                        }],
-                        xAxes:[{
-                            ticks:{
-                                beginAtZero:true
-                            }
-                        }]
+                    title:{
+                        display: true,
+                        text: 'Porcentaje de votos por opción'
                     },
                     animation: {
                         easing: 'linear',
-                        duration: 1000
+                        duration: 800
                     } 
                 }
             });
@@ -136,24 +122,20 @@
 
                 // The data for our dataset
                 data: {
-                    labels: ['Tres', 'Cuatro'],
+                    labels: {{edadKeys|safe}},
                     datasets: [{
-                        label: 'Pruebas',
-                        backgroundColor: [
-                            'rgba(0, 128, 0, 0.5)',
-                            'rgba(255, 255, 0, 0.5)'
-                        ],
-                        borderColor: [
-                            'rgba(0, 128, 0, 1)',
-                            'rgba(255, 255, 0, 1)'
-                        ],
-                        data: [30, 70],
-                        borderWidth: 1
+                        label: 'Votos',
+                        backgroundColor: 'rgba(255, 255, 0, 0.7)',
+                        data: {{edadValues|safe}},
                     }]
                 },
 
                 // Configuration options go here
                 options: {
+                    title: {
+                        text:'Número de votos por edad',
+                        display: true
+                    },
                     scales:{
                         yAxes:[{
                             ticks:{
@@ -168,7 +150,7 @@
                     },
                     animation: {
                         easing: 'linear',
-                        duration: 1000
+                        duration: 800
                     } 
                 }
             });
@@ -176,48 +158,33 @@
         }else{
             chart = new Chart(ctx, {
                 // The type of chart we want to create
-                type: 'horizontalBar',
-
+                type: 'pie',
                 // The data for our dataset
                 data: {
-                    labels: ['Uno', 'Dos'],
+                    labels: {{opciones|safe}},
                     datasets: [{
-                        label: 'Pruebas',
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.5)',
-                            'rgba(54, 162, 235, 0.5)'
+                            'rgba(255, 0, 0, 0.7)',
+                            'rgba(54, 162, 235, 0.7)'
                         ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)'
-                        ],
-                        data: {{numero}},
-                        borderWidth: 1
+                        data: {{numero|safe}},
                     }]
                 },
 
                 // Configuration options go here
                 options: {
-                    scales:{
-                        yAxes:[{
-                            ticks:{
-                                beginAtZero:true
-                            }
-                        }],
-                        xAxes:[{
-                            ticks:{
-                                beginAtZero:true
-                            }
-                        }]
+                    title:{
+                        display: true,
+                        text: 'Porcentaje de votos por opción'
                     },
                     animation: {
                         easing: 'linear',
-                        duration: 1000
+                        duration: 800
                     } 
                 }
             });
             numgraph = 1;
-        }
+         }
         }
     </script>
     <input type="button" onClick="scriptGrafico()" value="grafico"/>

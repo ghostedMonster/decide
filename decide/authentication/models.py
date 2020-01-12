@@ -13,6 +13,7 @@ REGION_CHOICES = [('Galicia','Galicia'), ('Principado de Asturias','Principado d
                   ('Comunidad Valenciana','Comunidad Valenciana'), 
                   ('Islas Baleares','Islas Baleares'), ('Andalucia','Andalucía'), 
                   ('Region de Murcia','Región de Murcia'), ('Islas Canarias','Islas Canarias')]
+SEX_CHOICES= [('Hombre', 'Hombre'), ('Mujer', 'Mujer'), ('Prefiero no decirlo', 'Prefiero no decirlo')]
 
 def validator_edad(edad):
     if edad > 120 or edad<0:
@@ -23,9 +24,10 @@ def validator_edad(edad):
 
 class Voter(models.Model):
     edad = models.IntegerField(validators=[validator_edad])
-    region = models.CharField(max_length=50, choices=REGION_CHOICES)
-    profesion = models.TextField(max_length=50)
-    estudios = models.TextField(max_length=50)
+    region = models.CharField(max_length=50, choices=REGION_CHOICES, blank=True)
+    profesion = models.TextField(max_length=50, blank=True)
+    estudios = models.TextField(max_length=50, blank=True)
+    sexo = models.CharField(max_length=20, choices=SEX_CHOICES, default='Prefiero no decirlo')
     Usuario = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
