@@ -8,6 +8,7 @@ from django.http import Http404
 
 from base import mods
 from django.shortcuts import render
+from reportlab.lib.utils import ImageReader
 
 class VisualizerView(TemplateView):
     template_name = 'visualizer/visualizer.html'
@@ -40,12 +41,13 @@ class VisualizerView(TemplateView):
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="datos_decide.pdf"'
 
+        logo = ImageReader('https://images.squarespace-cdn.com/content/v1/531365fbe4b060dc36b4afa6/1553794264094-CFUAKKDDNYRG14W2CIXU/ke17ZwdGBToddI8pDm48kHhlTY0to_qtyxq77jLiHTtZw-zPPgdn4jUwVcJE1ZvWhcwhEtWJXoshNdA9f1qD7Xj1nVWs2aaTtWBneO2WM-sIRozzR0FWTsIsFVspibqsB7eL2qd43SOgdOvkAOY75w/django.png?format=300w')
         ## Create the PDF object, using the response object as its "file."
         p = canvas.Canvas(response)
 
         ## Draw things on the PDF. Here's where the PDF generation happens.
         ## See the ReportLab documentation for the full list of functionality.
-        #p.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
+        p.drawImage(logo, -20, 600, mask='auto')
         
         #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
         p.setFont("Helvetica", 16)
@@ -54,15 +56,15 @@ class VisualizerView(TemplateView):
         p.setFont("Helvetica", 14)
         p.drawString(200, 770, u"REPORTE DE DATOS DE VOTANTES")
         p.setFont("Helvetica", 10)
-        p.drawString(100, 720, u"Porcentaje 1: 0.25")
+        p.drawString(275, 680, u"Porcentaje 1: 0.25")
         p.setFont("Helvetica", 10)
-        p.drawString(100, 690, u"Porcentaje 2: 0.75")
+        p.drawString(275, 650, u"Porcentaje 2: 0.75")
         p.setFont("Helvetica", 10)
-        p.drawString(100, 660, u"Votos: 1357")
+        p.drawString(275, 620, u"Votos: 1357")
         p.setFont("Helvetica", 10)
-        p.drawString(100, 630, u"Votantes: 1521")
+        p.drawString(275, 590, u"Votantes: 1521")
         p.setFont("Helvetica", 10)
-        p.drawString(100, 600, u"Desviación: 0.321457")
+        p.drawString(275, 560, u"Desviación: 0.321457")
 
         ## Close the PDF object cleanly, and we're done.
         p.showPage()
