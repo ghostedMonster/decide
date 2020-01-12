@@ -13,6 +13,7 @@ REGION_CHOICES = [('Galicia','Galicia'), ('Principado de Asturias','Principado d
                   ('Comunidad Valenciana','Comunidad Valenciana'), 
                   ('Islas Baleares','Islas Baleares'), ('Andalucia','Andalucía'), 
                   ('Region de Murcia','Región de Murcia'), ('Islas Canarias','Islas Canarias')]
+SEX_CHOICES= [('Hombre', 'Hombre'), ('Mujer', 'Mujer'), ('Prefiero no decirlo', 'Prefiero no decirlo')]
 
 SEX_CHOICES= [('Hombre', 'Hombre'), ('Mujer', 'Mujer'), ('Prefiero no decirlo', 'Prefiero no decirlo')]
 

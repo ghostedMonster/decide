@@ -31,7 +31,6 @@ class VisualizerView(TemplateView):
             r1 = Voting.objects.filter(id=vid)[0]
             r2 = Vote.objects.filter(voting_id=vid).aggregate(num_votes=Count('voter_id'))
             
-            context['voting'] = json.dumps(r[0])
             numero=[]
 
             vTotal=r2['num_votes']
@@ -42,10 +41,17 @@ class VisualizerView(TemplateView):
      
             for opt in r1.postproc:
                 nv=(opt['votes']/r2['num_votes'])*100
-                numero.append(nv)
+                numero.append(round(nv, 2))
 
             
             context['numero'] = numero
+            for i in range(0, len(numero)):
+                r[0]['postproc'][i]['porcentaje'] = numero[i]
+            opciones=[]
+            for i in range(0, len(numero)):
+                opciones.append(r[0]['postproc'][i]['option'])
+            context['opciones'] = opciones
+            context['voting'] = json.dumps(r[0])
             ##Sacar el objeto census de la votacion y su voter id, habria que hacer un for con los [i]
             #Census.objects.filter(voting_id=1)[0].voter_id
 
@@ -73,7 +79,7 @@ class VisualizerView(TemplateView):
                     estudios1=votante1.estudios
                     profesion1=votante1.profesion
                     region1=votante1.region
-                    sexo1=votante1.sexo
+                    sexo1 = votante1.sexo
 
                 except:
                     print("Something went wrong")
@@ -92,6 +98,10 @@ class VisualizerView(TemplateView):
                     region[region1]=str(int(region.get(region1)) + 1)
                 else:
                     region[region1]=str(1)
+                if(sexo.get(sexo1) is not None):
+                    sexo[sexo1]=str(int(sexo.get(sexo1)) + 1)
+                else:
+                    sexo[sexo1]=str(1)  
                 
                 if(sexo.get(sexo1) is not None):
                     sexo[sexo1]=str(int(sexo.get(sexo1)) + 1)
@@ -102,10 +112,17 @@ class VisualizerView(TemplateView):
 
             context['pC'] = str(nc*100.0)
             context['edad'] = edad
+            context['edadKeys'] = list(edad.keys())
+            context['edadValues'] = list(edad.values())
             context['profesion'] = profesion
             context['region'] = region
+            region['No especificado'] = region.pop("")
+            context['regionKeys'] = list(region.keys())
+            context['regionValues'] = list(region.values())
             context['estudios'] = estudios
             context['sexo'] = sexo
+            context['sexoKeys'] = list(sexo.keys())
+            context['sexoValues'] = list(sexo.values())
 
             context['shareLink'] = shareLink
       
