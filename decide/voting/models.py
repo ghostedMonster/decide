@@ -6,6 +6,9 @@ from django.dispatch import receiver
 from base import mods
 from base.models import Auth, Key
 
+import requests
+import sys
+
 
 class Question(models.Model):
     desc = models.TextField()
@@ -109,6 +112,7 @@ class Voting(models.Model):
         tally = self.tally
         options = self.question.options.all()
 
+        
         opts = []
         for opt in options:
             if isinstance(tally, list):
@@ -124,6 +128,28 @@ class Voting(models.Model):
         data = { 'type': 'IDENTITY', 'options': opts }
         postp = mods.post('postproc', json=data)
 
+        id = "@Visualizer_decide"
+ 
+        token = "1068887281:AAHe7veJqhSAW2tkHWp3MquKfYaHXswv9OY"
+
+        votacion_name = self.name
+        mensaje  = str("Se ha cerrado la votación "+votacion_name+" con los siguientes resultados: ")
+
+        for opt in options:
+            if isinstance(tally, list):
+                votes = tally.count(opt.number)
+            else:
+                votes = 0
+            mensaje = mensaje + "\n"+str(opt.option)+": "+str(opt.number)+" votos."
+
+        url = "https://api.telegram.org/bot"+token+"/sendMessage"
+        params = {
+        'chat_id': id,
+        
+        'text' : mensaje
+        }
+        
+        requests.post(url, params=params)
         self.postproc = postp
         self.save()
 
