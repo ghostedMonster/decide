@@ -45,16 +45,15 @@
                     </tbody>
                 </table>             
             <br/>
-            La participación del censo ha sido del {{pC}}%.{{edad}}{{profesion}}{{region}}{{estudios}}{sexo}
-                
-            {% for key,value in edad.items %}
-                <li> {{ key }} -> {{value}}</li>
-            {% endfor %}
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+            <script language="javascript" src="js/jquery-1.2.6.min.js"></script>
+            <h4>La participación del censo ha sido del {{pC}}%</h4>
 
             </div>
 
         </div>
     </div>
+    
 {% endblock %}
 
 {% block extrabody %}
@@ -62,8 +61,7 @@
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
     <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script language="javascript" src="js/jquery-1.2.6.min.js"></script>
+    
 
     <script>
         var voting = {{voting|safe}}
@@ -75,8 +73,10 @@
             }
         })
     </script>
-    
-    
+    <input type="button" style="margin:auto;"onClick="graficoPorcentaje()" value="Porcentaje de votos por opción"/>
+    <input type="button" style="margin:auto;"onClick="graficoEdad()" value="Número de votos por edad"/>
+    <input type="button" style="margin:auto;"onClick="graficoRegion()" value="Número de votos por región"/>
+    <input type="button" style="margin:auto;"onClick="graficoSexo()" value="Número de votos por sexo"/>
 
     <div id="graph" style="width:30%; height: 30%;  padding: 10px; margin:auto;">
         <canvas id="myChart" width="500" height="500"></canvas>
@@ -92,7 +92,10 @@
                     datasets: [{
                         backgroundColor: [
                             'rgba(255, 0, 0, 0.8)',
-                            'rgba(54, 162, 235, 0.7)'
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 255, 0, 0.7)',
+                            'rgba(0, 253, 35, 0.8)',
+                            'rgba(220, 0, 234, 0.8)'
                         ],
                         data: {{numero|safe}},
                     }]
@@ -113,9 +116,8 @@
         </script>
     </div>
     <script>
-        function scriptGrafico(){
+        function graficoEdad(){
             chart.destroy();
-            if(numgraph == 1){
             chart = new Chart(ctx, {
                 // The type of chart we want to create
                 type: 'horizontalBar',
@@ -154,8 +156,97 @@
                     } 
                 }
             });
-            numgraph = 2;
-        }else{
+        }
+    </script>
+    <script>
+        function graficoSexo(){
+            chart.destroy();
+            chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'doughnut',
+                // The data for our dataset
+                data: {
+                    labels: {{sexoKeys|safe}},
+                    datasets: [{
+                        backgroundColor: [
+                            'rgba(255, 0, 0, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(0, 255, 0, 0.8)'
+                        ],
+                        data: {{sexoValues|safe}},
+                    }]
+                },
+
+                // Configuration options go here
+                options: {
+                    title:{
+                        display: true,
+                        text: 'Número de votos por sexo'
+                    },
+                    animation: {
+                        easing: 'linear',
+                        duration: 800
+                    } 
+                }
+            });
+        };
+    </script>
+    <script>
+        function graficoRegion(){
+            chart.destroy();
+            chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'horizontalBar',
+                // The data for our dataset
+                data: {
+                    labels: {{regionKeys|safe}},
+                    datasets: [{
+                        backgroundColor: [
+                            'rgba(255, 0, 0, 0.8)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 128, 0, 0.7)',
+                            'rgba(255, 255, 51, 0.8)',
+                            'rgba(153, 255, 51, 0.8)',
+                            'rgba(0, 255, 255, 0.8)',
+                            'rgba(0, 128, 255, 0.8)',
+                            'rgba(0,0,255, 0.8)',
+                            'rgba(102,0,204,0.8)',
+                            'rgba(255, 0, 255, 0.8)',
+                            'rgba(255,153,204,0.8)',
+                            'rgba(192, 192, 192, 0.8)',
+                            'rgba(32, 32, 32, 0.8)',
+                            'rgba(102, 51, 0, 0.8)',
+                            'rgba(255, 0, 127, 0.8)',
+                            'rgba(0, 51, 0, 0.8)',
+                            'rgba(51, 0, 0, 0.8)',
+                            'rgba(0, 0, 0, 51)',
+                            'rgba(102, 102, 255, 0.8)',
+                            'rgba(153, 153, 0, 0.8)'
+                        ],
+                        data: {{regionValues|safe}},
+                    }]
+                },
+
+                // Configuration options go here
+                options: {
+                    legend:{
+                        display:false
+                    },
+                    title:{
+                        display: true,
+                        text: 'Número de votos por región'
+                    },
+                    animation: {
+                        easing: 'linear',
+                        duration: 800
+                    } 
+                }
+            });
+        }
+    </script>
+    <script>
+        function graficoPorcentaje(){
+            chart.destroy();
             chart = new Chart(ctx, {
                 // The type of chart we want to create
                 type: 'pie',
@@ -164,8 +255,11 @@
                     labels: {{opciones|safe}},
                     datasets: [{
                         backgroundColor: [
-                            'rgba(255, 0, 0, 0.7)',
-                            'rgba(54, 162, 235, 0.7)'
+                            'rgba(255, 0, 0, 0.8)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 255, 0, 0.7)',
+                            'rgba(0, 253, 35, 0.8)',
+                            'rgba(220, 0, 234, 0.8)'
                         ],
                         data: {{numero|safe}},
                     }]
@@ -183,8 +277,6 @@
                     } 
                 }
             });
-            numgraph = 1;
-         }
         }
     </script>
     <input type="button" onClick="scriptGrafico()" value="grafico"/>

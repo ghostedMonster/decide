@@ -30,7 +30,7 @@ class VisualizerView(TemplateView):
      
             for opt in r1.postproc:
                 nv=(opt['votes']/r2['num_votes'])*100
-                numero.append(nv)
+                numero.append(round(nv, 2))
 
             
             context['numero'] = numero
@@ -102,8 +102,13 @@ class VisualizerView(TemplateView):
             context['edadValues'] = list(edad.values())
             context['profesion'] = profesion
             context['region'] = region
+            region['No especificado'] = region.pop("")
+            context['regionKeys'] = list(region.keys())
+            context['regionValues'] = list(region.values())
             context['estudios'] = estudios
             context['sexo'] = sexo
+            context['sexoKeys'] = list(sexo.keys())
+            context['sexoValues'] = list(sexo.values())
             ##Sacar el user a partir del voter id 
             #User.objects.filter(id=1)[0].username
   
