@@ -18,6 +18,7 @@ from django.shortcuts import render
 
 import requests
 import json
+import sys
 
 class VisualizerView(TemplateView):
     template_name = 'visualizer/visualizer.html'
@@ -139,10 +140,24 @@ class VisualizerView(TemplateView):
 
     def bypass(request):
         porcentajes  = [0.25, 0.75]
-        votos = 1357
+        votos = 1500
         votantes = 1521
         desviacion = 0.321457
-        return render(request, 'visualizer/visualizador.html', {'porcentajes': porcentajes, 'votos': votos, 'votantes':votantes, 'desviacion':desviacion})
+
+        id = "@Visualizer_decide"
+ 
+        token = "1068887281:AAHe7veJqhSAW2tkHWp3MquKfYaHXswv9OY"
+ 
+        mensaje  = str("Prueba de envío de mensaje \ncon dos lineas")
+        url = "https://api.telegram.org/bot1068887281:AAHe7veJqhSAW2tkHWp3MquKfYaHXswv9OY/sendMessage"
+        params = {
+        'chat_id': id,
+        
+        'text' : mensaje
+        }
+        
+        response = requests.post(url, params=params)
+        return render(request, 'visualizer/visualizador.html', {'porcentajes': porcentajes, 'votos': votos, 'votantes':response.status_code, 'desviacion':desviacion})
     
 class VotingListView(ListView):
     model = Voting
