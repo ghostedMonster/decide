@@ -2,6 +2,13 @@
 {% load i18n static %}
 
 {% block extrahead %}
+<head>
+<meta property="og:url"                content="{{url}}" />
+<meta property="og:type"               content="article" />
+<meta property="og:title"              content="{{title}}" />
+<meta property="og:description"        content="{{description}}" />
+<!-- <meta property="og:image"              content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" /> -->
+</head>
     <link type="text/css" rel="stylesheet"
          href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet"
@@ -46,7 +53,11 @@
                         </tr>
                     </tbody>
                 </table>
-                <img onclick="generaTelegram()" src="https://img.icons8.com/plasticine/2x/telegram-app.png" style="width:5%; height:auto;"/><a href="#" onclick="generaTelegram()">Compartir en Telegram</a>
+                <a><img onclick="generaTelegram()" src="https://img.icons8.com/plasticine/2x/telegram-app.png" style="width:5%; height:auto;"/></a><a href="#" onclick="generaTelegram()">Compartir en Telegram</a>
+                <img src="https://img.icons8.com/plasticine/2x/facebook-new.png" style="width:5%; height:auto;"><iframe src="https://www.facebook.com/plugins/share_button.php?href={{url}}&layout=button_count&size=small&appId=167757580595532&width=99&height=20" 
+                width="99" height="20" style="border:none;overflow:hidden" scrolling="no" 
+                frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                <a><img src="https://img.icons8.com/plasticine/2x/whatsapp.png" style="width:5%; height:auto;"></a><a href="https://api.whatsapp.com/send?text={{url}}" target="_blank">Compartir en Whatsapp</a>
                 <br/>
 
                 La participación del censo ha sido del {{pC}}%.{{edad}}{{profesion}}{{region}}{{estudios}}{{sexo}}
