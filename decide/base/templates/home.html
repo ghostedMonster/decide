@@ -30,7 +30,7 @@
     <div id="header">
         <div id="branding">
         
-<h1 id="site-name"><a href="">Decide Giratina</a></h1>
+            <h1 id="site-name"><a href="">Decide Giratina</a></h1>
 
         </div>
         
@@ -45,11 +45,60 @@
                 <a href="/admin/" >Log In</a>
             {% endif %}
             
-            
         </div>
     </div>  
-        
-        
-        
-    </div>
+</div>
+
+<!--Contenido-->
+<div id="content" class="flex">
+    <ul>
+        <p>Somos el grupo Decide-Giratina-Almacenamiento formado por:</p>
+            <ul>
+                <li type="disc">Angel Gonzalez Perez</li>
+                <li type="disc">David Morales Llucia</li>
+                <li type="disc">Roger Queralt Prunera</li>
+                <li type="disc">Luis Rodriguez Vidosa</li>
+                <li type="disc">David Sanchez Benaiges</li>
+            </ul>
+    </ul>
+
+    <ul>
+        <p>Nuestros cambios en la aplicación han sido:</p>
+        <ul>
+            <li type="disc">Implementación de una base de datos no relacional, mongodb</li>
+            <li type="disc">Panel de control general, con la información en tiempo real, por sexo, por región/ip</li>
+            <li type="disc">Edición del voto por el mismo votante</li>
+            <li type="disc">Realización de backups</li>
+
+        </ul>
+    </ul>   
+    <form action=/admin/store>
+        <input type="submit" value="Panel">
+        <input type="submit" value="Cambio de voto">
+        <input type="submit" value="Backups"> 
+    </form>
+    
+</div>   
+
+
+<style rel="stylesheet">
+
+    p {
+        font-size: 24px;
+    }
+
+    li {
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+
+    input {
+        font-size: 20px;
+        display: inline;
+        white-space: nowrap;
+    }
+
+
+</style>
+
 {% endblock %}

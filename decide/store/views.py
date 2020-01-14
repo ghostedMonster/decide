@@ -70,44 +70,40 @@ class StoreView(generics.ListAPIView):
         if perms.status_code == 401:
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
 
-        """
-        g = GeoIP()
-        ip = request.data.get('ip', None)
-        if ip:
-            city = g.city(ip)['city']
-        else:
-            city = 'Sevilla' # default """
-
-
         a = vote.get("a")
         b = vote.get("b")
 
+        defs = { "a": a, "b": b }
+
+        #validating time
         utime = vote.get("voted")
      
-        defs = { "a": a, "b": b }
-        
-        utime = vote.get("voted")
-
+        #validating sex
         usex = vote.get("voter_sex")
     
         if usex is not  'Hombre' or 'Mujer':
             return Response({}, status=status.HTTP_400_BAD_REQUEST) 
 
+        #validating age
         uage = vote.get("voter_age")
 
         if uage < 18:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
+        #validating ip
         uip = vote.get("voter_ip")
+
+        
         ucity = vote.get("voter_city")
 
         defs = { "a": a, "b": b }
         v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,voter_time=utime,voter_sex=usex,voter_age=uage,voter_ip=uip,voter_city=ucity,
              defaults=defs)
-        #v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
-         #                                 defaults=defs)
+       
         v.a = a
         v.b = b
+
+        #nuevos campos guardados 
         v.voted = utime
         v.voter_age = uage
         v.voter_sex = usex
