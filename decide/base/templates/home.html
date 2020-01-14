@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Decide!{% endblock title %}
+
+
+{% block extrahead %}
+<!DOCTYPE html>
+
+<html lang="en-us" >
+<head>
+<title>Site administration | Django site admin</title>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
+<link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css" />
+
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css" />
+
+
+<meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+
+
+<body class=" dashboard"
+  data-admin-utc-offset="0">
+
+<!-- Container -->
+<div id="container">
+
+    
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+        
+<h1 id="site-name"><a href="">Decide Giratina</a></h1>
+
+        </div>
+        
+        <div id="user-tools">
+            {% if user.is_authenticated %}
+                Bienvenido, 
+                <strong>{{ user.username }} !!!</strong> 
+                <a href ="/admin/">Panel</a>
+                <a href="/admin/password_change/">Cambiar Contrasenya</a>
+                <a href="/admin/logout/">Salir</a>    
+            {% else %}
+                <a href="/admin/" >Log In</a>
+            {% endif %}
+            
+            
+        </div>
+    </div>  
+        
+        
+        
+    </div>
+{% endblock %}

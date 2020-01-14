@@ -85,15 +85,34 @@ class StoreView(generics.ListAPIView):
         utime = vote.get("voted")
      
         defs = { "a": a, "b": b }
-        v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,voter_time=utime,
-             defaults=defs)
-        #voter_edad=uedad, voter_ip=uip,
-         #                                 defaults=defs)
+        
+        utime = vote.get("voted")
 
+        usex = vote.get("voter_sex")
+    
+        if usex is not  'Hombre' or 'Mujer':
+            return Response({}, status=status.HTTP_400_BAD_REQUEST) 
+
+        uage = vote.get("voter_age")
+
+        if uage < 18:
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+        uip = vote.get("voter_ip")
+        ucity = vote.get("voter_city")
+
+        defs = { "a": a, "b": b }
+        v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,voter_time=utime,voter_sex=usex,voter_age=uage,voter_ip=uip,voter_city=ucity,
+             defaults=defs)
         #v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
          #                                 defaults=defs)
         v.a = a
         v.b = b
+        v.voted = utime
+        v.voter_age = uage
+        v.voter_sex = usex
+        v.voter_ip = uip
+        v.voter_city = ucity
 
         v.save()
         
