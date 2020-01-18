@@ -20,7 +20,6 @@ class StoreView(generics.ListAPIView):
     serializer_class = VoteSerializer
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     filter_fields = ('voting_id', 'voter_id')
-    #filter_fields = ('voting_id', 'voter_id','voter_sex','voter_edad','voter_ip')
 
     def get(self, request):
         self.permission_classes = (UserIsStaff,)
@@ -32,6 +31,7 @@ class StoreView(generics.ListAPIView):
          * voting: id
          * voter: id
          * vote: { "a": int, "b": int }
+         * change: int
         """
 
         vid = request.data.get('voting')
@@ -64,50 +64,51 @@ class StoreView(generics.ListAPIView):
         if perms.status_code == 401:
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
 
+        changeV = request.data.get('change')
 
-        
-        # the user is reedinting the vote
-        # crear una lista con los ids existentes en la votacions
-        con = psycopg2.connect(
-            host = '127.0.0.1',
-            database = 'postgres',
-            user = 'decide',
-            password = 'decide'
-        )
-        # create cursor
-        cur = con.cursor()
-        uid = request.data.get('voter') # cojer el id del votante
-        #uid = int(uid)
+        if changeV != 41:
+            # the user is reedinting the vote
+            # crear una lista con los ids existentes en la votacions
+            con = psycopg2.connect(
+                host = '127.0.0.1',
+                database = 'postgres',
+                user = 'decide',
+                password = 'decide'
+            )
+            # create cursor
+            cur = con.cursor()
+            uid = request.data.get('voter') # cojer el id del votante
+            #uid = int(uid)
 
-        # Me peta el travis por no encontrar store_vote??? REVISAR
-        cur.execute("SELECT voter_id FROM store_vote WHERE voter_id = %s;", (uid,))
-        
-        row = cur.fetchone()
-        
-        if row is not None:
-            print(0)
-            #Borrar voto anterior
-            return Response({}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            cur.execute("SELECT voter_id FROM store_vote WHERE voter_id = %s;", (uid,))
+            
+            row = cur.fetchone()
 
-        #con.commit() not used here
-        # close conection
-        con.close()
-        
+            # close conection
+            con.close()
+            
+            # Comprovar si el votante ha votado ya, si es que si, no deja (service unvailable)
+            if row is not None:
+                return Response({}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+ 
         a = vote.get("a")
         b = vote.get("b")
 
         defs = { "a": a, "b": b }
         v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
                                           defaults=defs)
-        #v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,voter_sex=usex, voter_edad=edad, voter_ip=uip
-         #                                 defaults=defs)
+        
         v.a = a
         v.b = b
 
         v.save()
 
+        if changeV == 41:
+            return Response({}, status= status.HTTP_501_NOT_IMPLEMENTED)
+            
         return  Response({})
 
+# Printea por pantalla Hellow
 def ChangevoteView(request):
     return HttpResponse("<h1>Hellow!<h1>")
     '''return render (
@@ -115,9 +116,35 @@ def ChangevoteView(request):
         'base.html',
     )'''
 
+# Redirige a la pagina home.html
 def Changevote (request, *args, **kwargs):
-    #return HttpResponse("<h1>Hellow!<h1>")
-    return render(request, "home.html", {})
+    
+    con = psycopg2.connect(
+            host = '127.0.0.1',
+            database = 'postgres',
+            user = 'decide',
+            password = 'decide'
+        )
+    # create cursor
+    cur = con.cursor()
+    uid = 3 #request.data.get('voter') # cojer el id del votante
+    #uid = int(uid)
+
+    cur.execute("SELECT voting_id FROM store_vote WHERE voter_id = %s;", (uid,))
+
+    row = cur.fetchone()
+
+    id_votacion = row
+    #name_votacion = 
+    context= {
+        'id': id_votacion,
+        'id2': 'Hola',
+        'request': request,
+        #'nombre': name_votacion,
+        }
+
+    # En context pasamos las votaciones en las que ha participado (ID y nombre votación)
+    return render(request, "home.html", context)
      
 
 
