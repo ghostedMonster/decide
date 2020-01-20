@@ -66,20 +66,27 @@
         <p>Nuestros cambios en la aplicación han sido:</p>
         <ul>
             <li type="disc">Implementación de una base de datos no relacional, mongodb</li>
-            <li type="disc">Panel de control general, con la información en tiempo real, por sexo, por región/ip</li>
+            <li type="disc">Panel de control general, con la información en tiempo real, por sexo, por región/ip    </li>
             <li type="disc">Edición del voto por el mismo votante</li>
             <li type="disc">Realización de backups</li>
-
+          
         </ul>
     </ul>   
-    <form action=/admin/store>
-        <input type="submit" value="Panel">
-        <input type="submit" value="Cambio de voto">
-        <input type="submit" value="Backups"> 
+
+    <form action=/admin/store/vote>
+        <input href="/admin/store/vote" type="submit" value="Panel"></input>
     </form>
+    <form action=/admin/store>
+        <input type="submit" value="Cambio de voto">
+    </form>
+    <form action=/admin/store>
+        <input type="submit" value="Backups">
+    </form>
+
+    
+        
     
 </div>   
-
 
 <style rel="stylesheet">
 
@@ -90,12 +97,14 @@
     li {
         font-size: 18px;
         margin-bottom: 4px;
+        white-space: nowrap;
     }
 
     input {
         font-size: 20px;
-        display: inline;
-        white-space: nowrap;
+        float: left;
+        width: 30%;
+        margin: 0 1.5% 24px 1.5%;
     }
 
 

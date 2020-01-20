@@ -75,25 +75,16 @@ class StoreView(generics.ListAPIView):
 
         defs = { "a": a, "b": b }
 
-        #validating time
+       #nuevos atributos que se han recibido 
         utime = vote.get("voted")
      
-        #validating sex
         usex = vote.get("voter_sex")
-    
-        if usex is not  'Hombre' or 'Mujer':
-            return Response({}, status=status.HTTP_400_BAD_REQUEST) 
 
-        #validating age
         uage = vote.get("voter_age")
-
-        if uage < 18:
-            return Response({}, status=status.HTTP_400_BAD_REQUEST)
-
-        #validating ip
+    
         uip = vote.get("voter_ip")
 
-        
+
         ucity = vote.get("voter_city")
 
         defs = { "a": a, "b": b }
@@ -103,7 +94,7 @@ class StoreView(generics.ListAPIView):
         v.a = a
         v.b = b
 
-        #nuevos campos guardados 
+        #Guardado de campos  
         v.voted = utime
         v.voter_age = uage
         v.voter_sex = usex
@@ -113,5 +104,3 @@ class StoreView(generics.ListAPIView):
         v.save()
         
         return  Response({})     
-
-      
