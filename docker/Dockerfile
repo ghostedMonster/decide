@@ -10,7 +10,7 @@ RUN pip install ipython
 
 
 WORKDIR /app
-ADD ./decide/ ./decide 
+RUN git clone --branch almacenamiento_bd --single-branch https://github.com/EGC-GIRATINA/decide.git . 
 RUN pip install -r requirements.txt
 
 WORKDIR /app/decide
