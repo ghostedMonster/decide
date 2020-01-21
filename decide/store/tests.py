@@ -65,6 +65,8 @@ class StoreTextCase(BaseTestCase):
             }
             response = self.client.post('/store/', data, format='json')
             self.assertEqual(response.status_code, 200)
+            response = self.client.post('/store/', data, format='json')
+            self.assertEqual(response.status_code, 200)
 
         self.logout()
         return votings, users
@@ -95,7 +97,7 @@ class StoreTextCase(BaseTestCase):
         user = self.get_or_create_user(1)
         self.login(user=user.username)
         response = self.client.post('/store/', data, format='json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)   
 
         self.assertEqual(Vote.objects.count(), 1)
         self.assertEqual(Vote.objects.first().voting_id, VOTING_PK)
@@ -196,7 +198,3 @@ class StoreTextCase(BaseTestCase):
         self.voting.save()
         response = self.client.post('/store/', data, format='json')
         self.assertEqual(response.status_code, 401)
-
-    def test_new (self):
-        a = 5
-    
