@@ -2,11 +2,15 @@ DEBUG = True
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
+        'ENGINE': 'mongoengine',
+        'ENFORCE_SCHEMA': True,
+        'NAME': 'mongodb',
+        'USER': 'root',
+	'PASSWORD': 'mongoadmin',
         'HOST': 'db',
-        'PORT': 5432,
+        'PORT': 27017,
+	'AUTH_SOURCE': 'admin',
+        'AUTH_MECHANISM': 'SCRAM-SHA-1',
     }
 }
 

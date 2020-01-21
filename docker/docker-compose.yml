@@ -4,11 +4,14 @@ services:
   db:
     restart: always
     container_name: decide_db
-    image: postgres:alpine
+    image: mongo
     volumes:
-      - db:/var/lib/postgresql/data
+      - db:/var/lib/mongo/data
     networks:
       - decide
+    ports:
+      - 27017:27017
+     
   web:
     restart: always
     container_name: decide_web
