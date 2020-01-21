@@ -196,3 +196,7 @@ class StoreTextCase(BaseTestCase):
         self.voting.save()
         response = self.client.post('/store/', data, format='json')
         self.assertEqual(response.status_code, 401)
+
+    def test_new (self):
+        a = 5
+    

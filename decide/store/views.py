@@ -48,7 +48,6 @@ class StoreView(generics.ListAPIView):
         uid = request.data.get('voter')
         vote = request.data.get('vote')
         
-
         if not vid or not uid or not vote:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -78,18 +77,23 @@ class StoreView(generics.ListAPIView):
             # create cursor
             cur = con.cursor()
             uid = request.data.get('voter') # cojer el id del votante
-            #uid = int(uid)
 
-            cur.execute("SELECT voter_id FROM store_vote WHERE voter_id = %s;", (uid,))
-            
+            # Cojer id votacion para comprovar con la actual
+            cur.execute("SELECT voting_id FROM store_vote WHERE voter_id = %s;", (uid,))
+
+            #Creamos una lista con el id de las votaciones en las que ha votado el usuario          
             row = cur.fetchone()
+            row_pull = []
+            while row is not None:
+                row_pull.append(row[0])
+                row = cur.fetchone()
 
             # close conection
             con.close()
-            
-            # Comprovar si el votante ha votado ya, si es que si, no deja (service unvailable)
-            if row is not None:
-                return Response({}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            for a in row_pull:
+                # Comprovar si a es = vid
+                if int(a) == int(vid):
+                    return Response({}, status=status.HTTP_503_SERVICE_UNAVAILABLE)  
  
         a = vote.get("a")
         b = vote.get("b")
@@ -104,19 +108,10 @@ class StoreView(generics.ListAPIView):
         v.save()
 
         if changeV == 41:
-            return Response({}, status= status.HTTP_501_NOT_IMPLEMENTED)
+            return Response({}, status= status.HTTP_200_OK)
             
         return  Response({})
 
-# Printea por pantalla Hellow
-def ChangevoteView(request):
-    return HttpResponse("<h1>Hellow!<h1>")
-    '''return render (
-        request,
-        'base.html',
-    )'''
-
-# Redirige a la pagina home.html
 def Changevote (request, *args, **kwargs):
     
     con = psycopg2.connect(
@@ -128,24 +123,31 @@ def Changevote (request, *args, **kwargs):
     # create cursor
     cur = con.cursor()
     uid = 3 #request.data.get('voter') # cojer el id del votante
-    #uid = int(uid)
 
     cur.execute("SELECT voting_id FROM store_vote WHERE voter_id = %s;", (uid,))
 
     row = cur.fetchone()
+    row_pull = []
+    while row is not None:
+        row_pull.append(row[0])
+        row = cur.fetchone()
 
     id_votacion = row
-    #name_votacion = 
+    urls = []
+    for a in row_pull:
+       urls.append("/booth/"+str(a)+"?myVar=41")
+    # Crear las urls concatenadas ya, y enviarlas
     context= {
         'id': id_votacion,
-        'id2': 'Hola',
         'request': request,
+        'row': row_pull,
+        'url': urls, # pasamos las urls de los booth
         #'nombre': name_votacion,
         }
 
     # En context pasamos las votaciones en las que ha participado (ID y nombre votación)
-    return render(request, "home.html", context)
-     
+    return render(request, "changevote.html", context)
+    
 
 
 
