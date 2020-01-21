@@ -3,7 +3,7 @@ import sys
 import json
 
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.views.generic import FormView
 from pyexpat.errors import messages
 
@@ -117,8 +117,11 @@ class CensusView(TemplateView):
 
         context['voting'] = datos_votaciones
         context['users'] = datos_usuarios
+        ids = Census.objects.all().values_list('id', flat=True)
 
-        items = zip(datos_votaciones, datos_usuarios)
+        context['ids'] = ids
+
+        items = zip(ids, datos_votaciones, datos_usuarios)
 
         context['items'] = items
 
@@ -146,6 +149,14 @@ class CensusView(TemplateView):
             return excel.make_response(sheet, "xlsx", file_name="censo.xlsx")
         else:
             messages.error(request, 'Este formato {} no es valido'.format(format_exp))
+
+    def eliminaDatos(self, format_exp=None):
+        censo = Census.objects.filter(id=format_exp)
+
+        for i in censo:
+            Census.delete(i)
+        return redirect('/census/census')
+
 
 
 class CensusLogin(FormView):

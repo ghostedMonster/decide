@@ -13,19 +13,23 @@
 {% block content %}
     <h1>Censo</h1>
 
-
+    <a href="{% url 'new' %}">Añadir nuevos censos</a>
 
     <div v-if="!signup">
         <table>
             <tr>
+                <th>IDs</th>
                 <th>Votación</th>
                 <th>Votante</th>
+                <th>Eliminar censo</th>
             </tr>
 
             {% for r in items %}
                 <tr>
                     <td> {{ r.0 }} </td>
                     <td> {{ r.1 }} </td>
+                    <td> {{ r.2 }} </td>
+                    <td> <a href="/census/delete/{{ r.0 }}">Eliminar censo</a> </td>
                 </tr>
             {% endfor %}
 
