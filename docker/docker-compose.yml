@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  db:
+  mongodb:
     restart: always
     container_name: decide_db
     image: mongo
@@ -9,8 +9,21 @@ services:
       - db:/var/lib/mongo/data
     networks:
       - decide
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongoadmin
+      MONGO_INITDB_DATABASE: django_mongodb_docker
     ports:
       - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongoadmin
      
   web:
     restart: always
@@ -22,10 +35,35 @@ services:
       - "5000"
     volumes:
       - static:/app/static
+    links:
+      - mongodb      
     depends_on:
-      - db
+      - migration
     networks:
       - decide
+
+  migration:
+    build: .
+    image: app
+    command: python manage.py migrate
+    volumes:
+      - .:/django_mongodb_docker
+    links:
+      - mongodb
+    depends_on:
+      - make_migrations
+
+  make_migrations:
+    build: .
+    image: app
+    command: python manage.py makemigrations
+    volumes:
+      - .:/django_mongodb_docker
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+
   nginx:
     restart: always
     container_name: decide_nginx

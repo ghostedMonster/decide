@@ -2,17 +2,21 @@ DEBUG = True
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mongoengine',
+        'ENGINE': 'django.db.backends.dummy',
         'ENFORCE_SCHEMA': True,
         'NAME': 'mongodb',
         'USER': 'root',
 	'PASSWORD': 'mongoadmin',
-        'HOST': 'db',
+        'HOST': 'mongodb',
         'PORT': 27017,
 	'AUTH_SOURCE': 'admin',
         'AUTH_MECHANISM': 'SCRAM-SHA-1',
     }
 }
+
+AUTHENTICATION_BACKENDS = (
+    'mongoengine.django.auth.MongoEngineBackend',
+)
 
 STATIC_ROOT = '/app/static/'
 MEDIA_ROOT = '/app/static/media/'
