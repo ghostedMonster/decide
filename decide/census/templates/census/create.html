@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static 'census/census.css' %}">
+    <title>Censo</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Censo</h1>
+
+    {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+
+    <p>Elija el usuario y votación que quiera añadir:</p>
+    <form method="post" action="{% url 'new' %}?next={% url 'index' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button id="submit" type="submit">Enviar</button>
+    <!--<form action="/census/create/">
+        <table>
+            <tr>
+                <th>
+                    Check
+                </th>
+                <th>
+                    ID de usuario
+                </th>
+                <th>
+                    Usuario
+                </th>
+            </tr>
+
+            {% for r in items %}
+                <tr>
+                    <td><input type="checkbox" name="selected" value="r.0.id"></td>
+                    <td> {{ r.0.id }} </td>
+                    <td> {{ r.0.username }} </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+
+        <table>
+            <tr>
+                <th>
+                    Check
+                </th>
+                <th>
+                    ID de votación
+                </th>
+                <th>
+                    Votación
+                </th>
+            </tr>
+            {% for r in items_voting %}
+                <tr>
+                    <td><input type="radio" name="voting" value="r.0"></td>
+                    <td> {{ r.0 }} </td>
+                    <td> {{ r.1 }} </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </form>-->
+
+
+{% endblock %}

@@ -2,12 +2,15 @@
 import sys
 import json
 
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
 from django.views.generic import FormView
 from pyexpat.errors import messages
 
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import TemplateView
+from django.views.generic.base import View
 
 from rest_framework import generics
 from rest_framework.response import Response
@@ -21,14 +24,61 @@ from django.conf import settings
 from base.perms import UserIsStaff
 from rest_framework.utils import json
 
-from .forms import CensusForm
+from .forms import CensusForm, CreateCensusForm
 from .models import Census
 from django.contrib.auth.models import User
 import django_excel as excel
 
 from base import mods
 
+from django import forms
 
+class CensusNew(FormView):
+    template_name = 'census/create.html'
+    form_class = CreateCensusForm
+    model = Census
+    success_url = '/census/census/'
+
+    def form_valid(self, form, **kwargs):
+        form = CreateCensusForm(self.request.POST)
+        censuses = Census.objects.all()
+
+        if form.is_valid():
+            try:
+                voting = mods.get('voting', params={'id': form.cleaned_data['votacion']})
+                voter = form.cleaned_data['votante']
+                census = Census(voting_id=form.cleaned_data['votacion'], voter_id=voter)
+                census.save()
+            except IntegrityError as e:
+                return HttpResponse("ERROR: Lo que has puesto ya existe!")
+
+        return super(CensusNew, self).form_valid(form)
+
+
+
+""" def get_context_data(self, *args, **kwargs):
+        context = super(CensusNew, self).get_context_data(**kwargs)
+
+        usuarios = User.objects.all()
+
+        votaciones = mods.get('voting')
+
+        ids = []
+        names = []
+
+        # import pdb
+        # pdb.set_trace()
+        for i in votaciones:
+            ids.append(i['id'])
+            names.append(i['name'])
+
+        items = zip(usuarios)
+        items_voting = zip(ids, names)
+        context['items_voting'] = items_voting
+        print(items)
+        context['items'] = items
+
+        return context"""
 
 class CensusView(TemplateView):
     template_name = "census/census.html"
@@ -51,6 +101,9 @@ class CensusView(TemplateView):
         for dato in datos:
             votings.append(mods.get('voting', params={'id': dato.voting_id}))
             users.append(User.objects.get(id=dato.voter_id))
+        print(votings)
+        print(users)
+
         users_list = list(users)
 
 

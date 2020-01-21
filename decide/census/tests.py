@@ -76,6 +76,7 @@ class CensusTestCase(TestCase):
         self.assertEqual(0, Census.objects.count())
 
 
+"""
 class AccountTestCase(LiveServerTestCase):
 
     def setUp(self):
@@ -90,7 +91,7 @@ class AccountTestCase(LiveServerTestCase):
         self.selenium.quit()
         super(AccountTestCase, self).tearDown()
 
-    def test_login(self):
+   def test_login(self):
         selenium = self.selenium
         selenium.get('http://127.0.0.1:8000/census/')
         link = selenium.find_element_by_link_text('login')
@@ -106,4 +107,4 @@ class AccountTestCase(LiveServerTestCase):
         submit.send_keys(Keys.RETURN)
         print('current url:')
         print(selenium.current_url)
-        assert selenium.current_url == 'http://127.0.0.1:8000/census/'
+        assert selenium.current_url == 'http://127.0.0.1:8000/census/'"""
