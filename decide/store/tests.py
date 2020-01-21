@@ -17,8 +17,9 @@ from voting.models import Question
 from voting.models import Voting
 
 
-class StoreTextCase(BaseTestCase):
 
+class StoreTextCase(BaseTestCase):
+        
     def setUp(self):
         super().setUp()
         self.question = Question(desc='qwerty')
@@ -44,30 +45,35 @@ class StoreTextCase(BaseTestCase):
         user.set_password('qwerty')
         user.save()
         return user
-
+    
     def gen_votes(self):
         votings = [random.randint(1, 5000) for i in range(10)]
         users = [random.randint(3, 5002) for i in range(50)]
+        
         for v in votings:
             a = random.randint(2, 500)
             b = random.randint(2, 500)
+           
             self.gen_voting(v)
             random_user = random.choice(users)
-            #falta añadir los campos extra guardados
+
             user = self.get_or_create_user(random_user)
             self.login(user=user.username)
             census = Census(voting_id=v, voter_id=random_user)
             census.save()
+    
             data = {
                 "voting": v,
                 "voter": random_user,
-                "vote": { "a": a, "b": b }
+                "vote": { "a": a, "b": b }       
             }
             response = self.client.post('/store/', data, format='json')
             self.assertEqual(response.status_code, 200)
 
         self.logout()
         return votings, users
+
+
 
     def test_gen_vote_invalid(self):
         data = {
@@ -78,8 +84,6 @@ class StoreTextCase(BaseTestCase):
         response = self.client.post('/store/', data, format='json')
         self.assertEqual(response.status_code, 401)
 
-    # Crear función para comprovar la invalidez de una IP
-
     def test_store_vote(self):
         VOTING_PK = 345
         CTE_A = 96
@@ -87,10 +91,11 @@ class StoreTextCase(BaseTestCase):
         census = Census(voting_id=VOTING_PK, voter_id=1)
         census.save()
         self.gen_voting(VOTING_PK)
+
         data = {
             "voting": VOTING_PK,
             "voter": 1,
-            "vote": { "a": CTE_A, "b": CTE_B }
+            "vote": { "a": CTE_A, "b": CTE_B }        
         }
         user = self.get_or_create_user(1)
         self.login(user=user.username)
@@ -166,6 +171,7 @@ class StoreTextCase(BaseTestCase):
         self.assertEqual(len(votes), 1)
         self.assertEqual(votes[0]["voting_id"], v)
         self.assertEqual(votes[0]["voter_id"], u)
+
 
     def test_voting_status(self):
         data = {

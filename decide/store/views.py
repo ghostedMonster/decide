@@ -4,6 +4,7 @@ import django_filters.rest_framework
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import generics
+from django.views.generic import ListView
 
 from .models import Vote
 from .serializers import VoteSerializer
@@ -11,8 +12,7 @@ from base import mods
 from base.perms import UserIsStaff
 #para añadir la pagina index.html
 from django.shortcuts import render
-
-
+import re
 
 def home_view(request):
     return render(
@@ -24,15 +24,14 @@ class StoreView(generics.ListAPIView):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
-    filter_fields = ('voting_id', 'voter_id', 'voter_time','voter_sex','voter_age','voter_ip')
-    #filter_fields = ('voting_id', 'voter_id')
+    filter_fields = ('voting_id', 'voter_id', 'voted','voter_sex','voter_age','voter_ip','voter_city')
 
-
+    
     def get(self, request):
         self.permission_classes = (UserIsStaff,)
         self.check_permissions(request)
         return super().get(request)
-
+        
     def post(self, request):
         """
          * voting: id
@@ -54,6 +53,7 @@ class StoreView(generics.ListAPIView):
         uid = request.data.get('voter')
         vote = request.data.get('vote')
         
+       
 
         if not vid or not uid or not vote:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
@@ -75,26 +75,27 @@ class StoreView(generics.ListAPIView):
 
         defs = { "a": a, "b": b }
 
-       #nuevos atributos que se han recibido 
-        utime = vote.get("voted")
+       #nuevos atributos 
+        utime = timezone.now()
      
-        usex = vote.get("voter_sex")
-
-        uage = vote.get("voter_age")
+        usex = "Hombre"
     
-        uip = vote.get("voter_ip")
-
-
-        ucity = vote.get("voter_city")
-
+        uage = 20        
+        
+        
+        uip = '0.0.0.0'
+        
+        ucity = "Sevilla"
+        
         defs = { "a": a, "b": b }
-        v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,voter_time=utime,voter_sex=usex,voter_age=uage,voter_ip=uip,voter_city=ucity,
+
+        v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,voted=utime,voter_sex=usex,voter_age=uage,voter_ip=uip,voter_city=ucity,
              defaults=defs)
        
         v.a = a
         v.b = b
 
-        #Guardado de campos  
+        #Guardado de atributos  
         v.voted = utime
         v.voter_age = uage
         v.voter_sex = usex

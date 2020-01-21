@@ -16,6 +16,10 @@ install:
 script:
 - cd decide
 - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
+branches:
+  only:
+  - almacenamiento
+  - almacenamiento_panel
 deploy:
   provider: heroku
   app: almacenamientodavidsan

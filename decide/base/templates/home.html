@@ -10,30 +10,19 @@
 <title>Site administration | Django site admin</title>
 <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
 <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css" />
-
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css" />
-
-
 <meta name="robots" content="NONE,NOARCHIVE" />
 </head>
-
-
 <body class=" dashboard"
   data-admin-utc-offset="0">
-
 <!-- Container -->
 <div id="container">
-
-    
     <!-- Header -->
     <div id="header">
         <div id="branding">
-        
             <h1 id="site-name"><a href="">Decide Giratina</a></h1>
-
         </div>
-        
         <div id="user-tools">
             {% if user.is_authenticated %}
                 Bienvenido, 
@@ -44,11 +33,9 @@
             {% else %}
                 <a href="/admin/" >Log In</a>
             {% endif %}
-            
         </div>
     </div>  
 </div>
-
 <!--Contenido-->
 <div id="content" class="flex">
     <ul>
@@ -61,7 +48,6 @@
                 <li type="disc">David Sanchez Benaiges</li>
             </ul>
     </ul>
-
     <ul>
         <p>Nuestros cambios en la aplicación han sido:</p>
         <ul>
@@ -72,26 +58,20 @@
           
         </ul>
     </ul>   
-
     <form action=/admin/store/vote>
-        <input href="/admin/store/vote" type="submit" value="Panel"></input>
+        <input type="submit" value="Panel"></input>
     </form>
-    <form action=/admin/store>
+    <form action=/changevote>
         <input type="submit" value="Cambio de voto">
     </form>
     <form action=/admin/store>
         <input type="submit" value="Backups">
-    </form>
-
-    
-        
-    
+    </form>   
 </div>   
-
 <style rel="stylesheet">
-
     p {
         font-size: 24px;
+        white-space: nowrap;
     }
 
     li {
@@ -99,15 +79,11 @@
         margin-bottom: 4px;
         white-space: nowrap;
     }
-
     input {
         font-size: 20px;
         float: left;
         width: 30%;
         margin: 0 1.5% 24px 1.5%;
     }
-
-
 </style>
-
 {% endblock %}

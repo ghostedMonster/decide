@@ -8,7 +8,7 @@ class VoteSerializer(serializers.HyperlinkedModelSerializer):
     a = serializers.IntegerField()
     b = serializers.IntegerField()
 
-    voted = serializers.TimeField()
+    voted = serializers.DateTimeField()
     # sexo 
     voter_sex = serializers.CharField()
     # edad 
@@ -19,6 +19,6 @@ class VoteSerializer(serializers.HyperlinkedModelSerializer):
     voter_city = serializers.CharField()
     class Meta:
         model = Vote
-        fields = ('voting_id', 'voter_id', 'a', 'b','voted','voter_sex','voter_age''voter_ip','voter_city')
+        fields = ('voting_id', 'voter_id', 'a', 'b','voted','voter_sex','voter_age','voter_ip','voter_city')
         #fields = ('voting_id', 'voter_id', 'a', 'b')
 

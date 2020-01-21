@@ -19,7 +19,6 @@ class Migration(migrations.Migration):
                 ('voter_id', models.PositiveIntegerField()),
                 ('a', models.PositiveIntegerField()),
                 ('b', models.PositiveIntegerField()),
-                ('voted', models.DateTimeField()),
             ],
         ),
     ]
