@@ -16,11 +16,14 @@ python:
   - "3.6"
 env:
 - DJANGO=2.0 DB=postgres
-before_install:
-- cd decide
 install:
   - pip install -r requirements.txt
   - pip install codacy-coverage
+  - pip install flake8
 script:
-  - python manage.py test
+  - cd decide
+  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
+  - coverage xml
+  - python-codacy-coverage -r coverage.xml
+  - flake8 .
 
