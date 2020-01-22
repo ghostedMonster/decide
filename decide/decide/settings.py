@@ -71,7 +71,7 @@ MODULES = [
     'voting',
 ]
 
-BASEURL = 'https://decide-giratina-almacenamiento.herokuapp.com/'
+BASEURL = 'https://decide-giratina-almacenamiento.herokuapp.com'
 
 APIS = {
     'authentication': BASEURL,
