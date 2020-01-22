@@ -6,8 +6,7 @@ addons:
   postgresql: "9.4"
 branches:
   only:
-  - Almacenamiento
-  - almacenamiento_travis
+  - almacenamiento
 before_script:
   - cd decide
   - cp local_settings.travis.py local_settings.py
@@ -31,7 +30,7 @@ deploy:
   provider: heroku
   app: decide-giratina-almacenamiento
   on: 
-    branch: almacenamiento_travis
+    branch: almacenamiento
   strategy: git
   api_key:
     secure: 1ba71a5b-9b1f-4f5b-b2f1-c6a0b57a1650
