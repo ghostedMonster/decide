@@ -4,8 +4,10 @@ services:
   - postgresql
 addons:
   postgresql: "9.4"
-global:
-  - PGPORT=5432
+branches:
+  only:
+  - Almacenamiento
+  - almacenamiento_travis
 before_script:
   - cd decide
   - cp local_settings.travis.py local_settings.py
@@ -15,15 +17,14 @@ before_script:
 language: python
 python:
   - "3.6"
-env:
-- DJANGO=2.0 DB=postgres
 install:
   - pip install -r requirements.txt
-  - pip install codacy-coverage
-  - pip install flake8
 script:
-  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-  - coverage xml
-  - python-codacy-coverage -r coverage.xml
-  - flake8 .
+  - python ./manage.py makemigrations
+  - python ./manage.py migrate
+  - python ./manage.py test --keepdb
+notifications:
+    email:
+      on_success: never
+      on_failure: never
 
