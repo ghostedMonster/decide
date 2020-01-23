@@ -30,7 +30,7 @@ BASEURL = 'http://localhost:8000'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'mongodb',
+        'NAME': 'mydb_test',
         'USER': 'decide',
         'HOST': 'decide',
         'PORT': '27017',
