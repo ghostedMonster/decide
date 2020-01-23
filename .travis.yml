@@ -21,7 +21,7 @@ install:
   - pip install codacy-coverage
   - pip install flake8
 script:
-  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
+  - coverage run --branch --source=. ./manage.py test --keepdb
   - coverage xml
   - python-codacy-coverage -r coverage.xml
   - flake8 .
