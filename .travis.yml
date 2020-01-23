@@ -24,7 +24,8 @@ script:
   - coverage run --branch --source=. ./manage.py test --keepdb
   - coverage xml
   - python-codacy-coverage -r coverage.xml
-  - flake8 . --ignore D203 \ --exclude authentication,base,booth,census,gateway,mixnet,postproc,visualizer,voting \ --max-complexity 10
+  - cd store
+  - flake8 . 
 notifications:
     email:
       on_success: never
