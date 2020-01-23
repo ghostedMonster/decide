@@ -10,7 +10,7 @@ before_script:
   - cd decide
   - cp local_settings.travis.py local_settings.py
   - sleep 15
-  - mongo mydb_test --eval 'db.createUser({user:"decide",pwd:"decide",roles:["readWrite"]});'
+  - mongo mydb_test --eval 'db.createUser({user:"decide",pwd:"decide",roles:[{role:"dbAdmin", db:"mongodb"}]});'
   
   
 language: python
