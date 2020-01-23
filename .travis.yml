@@ -1,19 +1,18 @@
 dist: xenial
 
 services:
-  - postgresql
-addons:
-  postgresql: "9.4"
+  - mongodb
+
 branches:
   only:
-  - Almacenamiento
   - almacenamiento_travis
 before_script:
   - cd decide
   - cp local_settings.travis.py local_settings.py
-  - psql -U postgres -c "create user decide password 'decide'"
-  - psql -U postgres -c "create database test_decide owner decide"
-  - psql -U postgres -c "ALTER USER decide CREATEDB"
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"decide",pwd:"decide",roles:["readWrite"]});'
+  
+  
 language: python
 python:
   - "3.6"
@@ -27,11 +26,4 @@ notifications:
     email:
       on_success: never
       on_failure: never
-deploy:
-  provider: heroku
-  app: decide-giratina-almacenamiento
-  on: 
-    branch: almacenamiento_travis
-  strategy: git
-  api_key:
-    secure: 1ba71a5b-9b1f-4f5b-b2f1-c6a0b57a1650
+
