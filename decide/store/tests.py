@@ -26,8 +26,7 @@ class StoreTextCase(BaseTestCase):
         self.voting = Voting(pk=5001,
                              name='voting example',
                              question=self.question,
-                             start_date=timezone.now(),
-        		)
+                             start_date=timezone.now(),)
         self.voting.save()
 
     def tearDown(self):
@@ -56,9 +55,7 @@ class StoreTextCase(BaseTestCase):
             self.login(user=user.username)
             census = Census(voting_id=v, voter_id=random_user)
             census.save()
-            data = {"voting": v,
-                "voter": random_user,
-                "vote": {"a": a, "b": b}}
+            data = {"voting": v,"voter": random_user,"vote": {"a": a, "b": b}}
             response = self.client.post('/store/', data, format='json')
             self.assertEqual(response.status_code, 200)
 
@@ -66,9 +63,7 @@ class StoreTextCase(BaseTestCase):
         return votings, users
 
     def test_gen_vote_invalid(self):
-        data = {"voting": 1,
-            "voter": 1,
-            "vote": {"a": 1, "b": 1}}
+        data = {"voting": 1,"voter": 1,"vote": {"a": 1, "b": 1}}
         response = self.client.post('/store/', data, format='json')
         self.assertEqual(response.status_code, 401)
 
@@ -161,7 +156,7 @@ class StoreTextCase(BaseTestCase):
         data = {
             "voting": 5001,
             "voter": 1,
-            "vote": { "a": 30, "b": 55 }
+            "vote": {"a": 30, "b": 55}
         }
         census = Census(voting_id=5001, voter_id=1)
         census.save()
