@@ -61,7 +61,7 @@ class StoreView(generics.ListAPIView):
         a = vote.get("a")
         b = vote.get("b")
 
-        defs = { "a": a, "b": b }
+        defs = {"a": a, "b": b}
         v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,
                                           defaults=defs)
         v.a = a
@@ -69,4 +69,4 @@ class StoreView(generics.ListAPIView):
 
         v.save()
 
-        return  Response({})
+        return Response({})

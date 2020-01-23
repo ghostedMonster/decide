@@ -27,15 +27,14 @@ class StoreTextCase(BaseTestCase):
                              name='voting example',
                              question=self.question,
                              start_date=timezone.now(),
-        )
+        		)
         self.voting.save()
 
     def tearDown(self):
         super().tearDown()
 
     def gen_voting(self, pk):
-        voting = Voting(pk=pk, name='v1', question=self.question, start_date=timezone.now(),
-                end_date=timezone.now() + datetime.timedelta(days=1))
+        voting = Voting(pk=pk, name='v1', question=self.question, start_date=timezone.now(), end_date=timezone.now() + datetime.timedelta(days=1))
         voting.save()
 
     def get_or_create_user(self, pk):
@@ -57,11 +56,9 @@ class StoreTextCase(BaseTestCase):
             self.login(user=user.username)
             census = Census(voting_id=v, voter_id=random_user)
             census.save()
-            data = {
-                "voting": v,
+            data = {"voting": v,
                 "voter": random_user,
-                "vote": { "a": a, "b": b }
-            }
+                "vote": {"a": a, "b": b}}
             response = self.client.post('/store/', data, format='json')
             self.assertEqual(response.status_code, 200)
 
@@ -69,11 +66,9 @@ class StoreTextCase(BaseTestCase):
         return votings, users
 
     def test_gen_vote_invalid(self):
-        data = {
-            "voting": 1,
+        data = {"voting": 1,
             "voter": 1,
-            "vote": { "a": 1, "b": 1 }
-        }
+            "vote": {"a": 1, "b": 1}}
         response = self.client.post('/store/', data, format='json')
         self.assertEqual(response.status_code, 401)
 
@@ -84,11 +79,9 @@ class StoreTextCase(BaseTestCase):
         census = Census(voting_id=VOTING_PK, voter_id=1)
         census.save()
         self.gen_voting(VOTING_PK)
-        data = {
-            "voting": VOTING_PK,
+        data = {"voting": VOTING_PK,
             "voter": 1,
-            "vote": { "a": CTE_A, "b": CTE_B }
-        }
+            "vote": {"a": CTE_A, "b": CTE_B}}
         user = self.get_or_create_user(1)
         self.login(user=user.username)
         response = self.client.post('/store/', data, format='json')
