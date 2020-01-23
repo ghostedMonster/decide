@@ -18,10 +18,15 @@ python:
   - "3.6"
 install:
   - pip install -r requirements.txt
+  - pip install codacy-coverage
+  - pip install flake8
 script:
   - python ./manage.py makemigrations
   - python ./manage.py migrate
-  - python ./manage.py test --keepdb
+  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
+  - coverage xml
+  - python-codacy-coverage -r coverage.xml
+  - flake8 .
 notifications:
     email:
       on_success: never
