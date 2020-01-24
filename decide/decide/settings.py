@@ -28,6 +28,15 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+CRON_CLASSES = [
+'store.auto_backups.auto_backups',
+]
+
+CRONJOBS = [
+    ('*/1 * * * *', 'store.auto_backups.auto_backups')
+]
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'dbbackup',  # django-dbbackup,
+    'background_task',
+    'django_cron',
+    'django_crontab',
 
     'corsheaders',
     'django_filters',
@@ -68,6 +81,7 @@ MODULES = [
     'store',
     'visualizer',
     'voting',
+    'backup',
 ]
 
 BASEURL = 'http://localhost:8000'
@@ -178,5 +192,6 @@ if os.path.exists("config.jsonnet"):
     for k, v in config.items():
         vars()[k] = v
 
-
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': '/home/riokaru/EGC/decidegiratina/decide/decide/store/backup/'}
 INSTALLED_APPS = INSTALLED_APPS + MODULES
