@@ -1,14 +1,11 @@
-import random
-from django.contrib.auth.models import User
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import TestCase, LiveServerTestCase
+from django.test import TestCase, LiveServerTestCase, override_settings
 from rest_framework.test import APIClient
 from selenium.webdriver.common.keys import Keys
 
-from census.models import Census
 from selenium import webdriver
+import time
 
-
+"""
 class CensusTestCase(TestCase):
 
     def setUp(self):
@@ -75,25 +72,42 @@ class CensusTestCase(TestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
 
-
 """
+
+
+@override_settings(ROOT_URLCONF='decide.decide.decide.urls')
 class AccountTestCase(LiveServerTestCase):
+    fixtures = ['database.json']
 
     def setUp(self):
-        self.u = User(username='admin')
-        self.u.set_password('123')
-        self.u.is_superuser = True
-        self.u.save()
-        self.selenium = webdriver.Firefox()
+        self.selenium = webdriver.Chrome(
+            executable_path='/home/jose/Escritorio/EGC/env/lib/python3.6/site-packages/chromedriver_linux64/chromedriver')
         super(AccountTestCase, self).setUp()
 
     def tearDown(self):
         self.selenium.quit()
         super(AccountTestCase, self).tearDown()
 
-   def test_login(self):
+    def test_login(self):
         selenium = self.selenium
-        selenium.get('http://127.0.0.1:8000/census/')
+        selenium.get('%s%s' % (self.live_server_url, '/census/'))
+
+        link = selenium.find_element_by_link_text('login')
+        link.click()
+        username = selenium.find_element_by_id('id_username')
+        password = selenium.find_element_by_id('id_password')
+        submit = selenium.find_element_by_id('submit')
+
+        username.send_keys('jose')
+        password.send_keys('Cc[7>2SM&R3zUvC7')
+        submit.click()
+        print('current url:')
+        print(selenium.current_url)
+        assert selenium.current_url == '%s%s' % (self.live_server_url, '/census/')
+
+    def test_bad_login(self):
+        selenium = self.selenium
+        selenium.get('%s%s' % (self.live_server_url, '/census/'))
         link = selenium.find_element_by_link_text('login')
         link.click()
         username = selenium.find_element_by_id('id_username')
@@ -101,10 +115,100 @@ class AccountTestCase(LiveServerTestCase):
 
         submit = selenium.find_element_by_id('submit')
 
-        username.send_keys('admin')
-        password.send_keys('123')
-
-        submit.send_keys(Keys.RETURN)
+        username.send_keys('jose')
+        password.send_keys('1234')
+        submit.click()
         print('current url:')
         print(selenium.current_url)
-        assert selenium.current_url == 'http://127.0.0.1:8000/census/'"""
+        assert selenium.current_url != '%s%s' % (self.live_server_url, '/census/')
+
+    def test_create_census(self):
+        selenium = self.selenium
+        selenium.get('%s%s' % (self.live_server_url, '/census/'))
+        link = selenium.find_element_by_link_text('login')
+        link.click()
+        username = selenium.find_element_by_id('id_username')
+        password = selenium.find_element_by_id('id_password')
+
+        submit = selenium.find_element_by_id('submit')
+
+        username.send_keys('jose')
+        password.send_keys('Cc[7>2SM&R3zUvC7')
+        submit.click()
+        time.sleep(2)
+        link_access = selenium.find_element_by_id('index')
+        link_access.click()
+        time.sleep(2)
+        link_create = selenium.find_element_by_id('link_create')
+        link_create.click()
+        votante = selenium.find_element_by_name('votante')
+        votacion = selenium.find_element_by_name('votacion')
+        votante.click()
+        time.sleep(2)
+        votante.send_keys('1')
+        votacion.click()
+        votacion.send_keys('2')
+        time.sleep(2)
+        submit = selenium.find_element_by_id('submit')
+
+        submit.click()
+        time.sleep(2)
+        print(selenium.current_url)
+        assert selenium.current_url == '%s%s' % (self.live_server_url, '/census/census/')
+
+    def test_bad_create_census(self):
+        selenium = self.selenium
+        selenium.get('%s%s' % (self.live_server_url, '/census/'))
+        link = selenium.find_element_by_link_text('login')
+        link.click()
+        username = selenium.find_element_by_id('id_username')
+        password = selenium.find_element_by_id('id_password')
+
+        submit = selenium.find_element_by_id('submit')
+
+        username.send_keys('jose')
+        password.send_keys('Cc[7>2SM&R3zUvC7')
+        submit.click()
+        time.sleep(2)
+        link_access = selenium.find_element_by_id('index')
+        link_access.click()
+        time.sleep(2)
+        link_create = selenium.find_element_by_id('link_create')
+        link_create.click()
+        votante = selenium.find_element_by_name('votante')
+        votacion = selenium.find_element_by_name('votacion')
+        votante.click()
+        time.sleep(2)
+        votante.send_keys('1')
+        votacion.click()
+        votacion.send_keys('1')
+        time.sleep(2)
+        submit = selenium.find_element_by_id('submit')
+
+        submit.click()
+        time.sleep(2)
+        print(selenium.current_url)
+        assert selenium.current_url != '%s%s' % (self.live_server_url, '/census/census/')
+
+    def test_delete_census(self):
+        selenium = self.selenium
+        selenium.get('%s%s' % (self.live_server_url, '/census/'))
+        link = selenium.find_element_by_link_text('login')
+        link.click()
+        username = selenium.find_element_by_id('id_username')
+        password = selenium.find_element_by_id('id_password')
+
+        submit = selenium.find_element_by_id('submit')
+
+        username.send_keys('jose')
+        password.send_keys('Cc[7>2SM&R3zUvC7')
+        submit.click()
+        time.sleep(2)
+        link_access = selenium.find_element_by_id('index')
+        link_access.click()
+        time.sleep(2)
+        delete = selenium.find_element_by_id('elimina_1')
+        delete.click()
+        time.sleep(2)
+        row_count = len(selenium.find_elements_by_xpath("//table[@id='DataTable']/tbody/tr"))
+        assert row_count == 0

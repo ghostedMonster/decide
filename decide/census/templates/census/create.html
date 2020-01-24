@@ -27,7 +27,7 @@
         </div>
     {% endfor %}
 {% endif %}
-
+    <div class="cuadro">
     <p>Elija el usuario y votación que quiera añadir:</p>
     <form method="post" action="{% url 'new' %}?next={% url 'index' %}">
         {% csrf_token %}
@@ -76,8 +76,9 @@
                     <td> {{ r.1 }} </td>
                 </tr>
             {% endfor %}
-        </table>
-    </form>-->
+        </table>-->
+    </form>
+    </div>
 
 
 {% endblock %}

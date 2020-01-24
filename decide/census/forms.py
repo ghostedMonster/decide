@@ -7,5 +7,5 @@ class CensusForm(forms.Form):
 
 
 class CreateCensusForm(forms.Form):
-    votante = forms.CharField(label='votante', max_length=100)
-    votacion = forms.CharField(label='votacion', max_length=100)
+    votante = forms.CharField(widget=forms.NumberInput(attrs={'id': 'votante'}), label='votante', max_length=100)
+    votacion = forms.CharField(widget=forms.NumberInput(attrs={'id': 'votacion'}), label='votacion', max_length=100)

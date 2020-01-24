@@ -1,0 +1,66 @@
+[
+
+  {
+    "model": "sessions.session",
+    "pk": "mr1jk5r0cijzg6jbdrjltcxhg5i6cx48",
+    "fields": {
+      "session_data": "NjZiYWEwMDgxYjM2MDRkNGIxMmI5NTRiYjY4ZGY1ZGNlYjA1M2MxOTp7ImF1dGgtdG9rZW4iOiJkNjlhMWQyNWQ3OGVjZmM2OGQ5NjU3YTk1NGM0NGY4ODlkYjJkMjJiIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJiYXNlLmJhY2tlbmRzLkF1dGhCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiNmJiNDU5Njk5YzE0YmM1YTIxZmM4MWY5NDgwMjBlMzE3ZTM0ZmEyZSJ9",
+      "expire_date": "2020-02-06T17:39:19.243Z"
+    }
+  },
+  {
+    "model": "base.auth",
+    "pk": 1,
+    "fields": {
+      "name": "jose",
+      "url": "http://localhost:8000",
+      "me": true
+    }
+  },
+  {
+    "model": "census.census",
+    "pk": 1,
+    "fields": {
+      "voting_id": 1,
+      "voter_id": 1
+    }
+  },
+  {
+    "model": "voting.question",
+    "pk": 1,
+    "fields": {
+      "desc": "\u00bfEs esto una pregunta?"
+    }
+  },
+  {
+    "model": "voting.question",
+    "pk": 2,
+    "fields": {
+      "desc": "\u00bfQueremos?"
+    }
+  },
+  {
+    "model": "voting.questionoption",
+    "pk": 1,
+    "fields": {
+      "question": 1,
+      "number": 2,
+      "option": "Si"
+    }
+  },
+  {
+    "model": "voting.questionoption", "pk": 2, "fields": {"question": 1, "number": 3, "option": "No"}},
+  {
+    "model": "voting.questionoption", "pk": 3, "fields": {"question": 2, "number": 2, "option": "Si"}},
+  {
+    "model": "voting.questionoption", "pk": 4, "fields": {"question": 2, "number": 3, "option": "No"}},
+  {
+    "model": "voting.voting", "pk": 1, "fields": {"name": "Hola", "desc": "", "question": 1, "start_date": null, "end_date": null, "pub_key": null, "tally": null, "postproc": null, "auths": [1]}},
+  {
+    "model": "voting.voting", "pk": 2, "fields": {"name": "votacion", "desc": "", "question": 2, "start_date": null, "end_date": null, "pub_key": null, "tally": null, "postproc": null, "auths": [1]}},
+  {
+    "model": "auth.user", "pk": 1, "fields": {"password": "pbkdf2_sha256$100000$dDWYqLi9IEzl$nmeS91T5QRqQQI4znw+5/bPDdlUHuZKNmOVgChsgLoU=", "last_login": "2020-01-23T17:39:19.051Z", "is_superuser": true, "username": "jose", "first_name": "", "last_name": "", "email": "jose@jose.jose", "is_staff": true, "is_active": true, "date_joined": "2020-01-23T17:38:04.817Z", "groups": [], "user_permissions": []}},
+  {
+    "model": "auth.user", "pk": 2, "fields": {"password": "pbkdf2_sha256$100000$qcW88oVcxiuX$JNjelbVBsweEs+JfeTuM0vgwskeWNr1grSG31ZtiRZU=", "last_login": null, "is_superuser": false, "username": "sosa", "first_name": "", "last_name": "", "email": "", "is_staff": false, "is_active": true, "date_joined": "2020-01-23T17:39:56.357Z", "groups": [], "user_permissions": []}},
+  {
+    "model": "authtoken.token", "pk": "d69a1d25d78ecfc68d9657a954c44f889db2d22b", "fields": {"user": 1, "created": "2020-01-23T17:39:18.414Z"}}]

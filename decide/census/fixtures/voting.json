@@ -1,0 +1,62 @@
+[
+  {
+    "model": "voting.question",
+    "pk": 1,
+    "fields": {"desc": "\u00bfEs esto una pregunta?"}
+  },
+  {
+    "model": "voting.question",
+    "pk": 2,
+    "fields": {"desc": "\u00bfQueremos?"}
+  },
+  {
+    "model": "voting.questionoption",
+    "pk": 1,
+    "fields": {"question": 1, "number": 2, "option": "Si"}
+  },
+  {
+    "model": "voting.questionoption",
+    "pk": 2,
+    "fields": {"question": 1, "number": 3, "option": "No"}
+  },
+  {
+    "model": "voting.questionoption",
+    "pk": 3,
+    "fields": {"question": 2, "number": 2, "option": "Si"}
+  },
+  {
+    "model": "voting.questionoption",
+    "pk": 4,
+    "fields": {"question": 2, "number": 3, "option": "No"}
+  },
+  {
+    "model": "voting.voting",
+    "pk": 1,
+    "fields": {
+      "name": "Hola",
+      "desc": "",
+      "question": 1,
+      "start_date": null,
+      "end_date": null,
+      "pub_key": null,
+      "tally": null,
+      "postproc": null,
+      "auths": [1]
+    }
+  },
+  {
+    "model": "voting.voting",
+    "pk": 2,
+    "fields": {
+      "name": "votacion",
+      "desc": "",
+      "question": 2,
+      "start_date": null,
+      "end_date": null,
+      "pub_key": null,
+      "tally": null,
+      "postproc": null,
+      "auths": [1]
+    }
+  }
+]

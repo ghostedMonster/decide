@@ -82,7 +82,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+#Para hacer pruebas poner: "decide.decide." al principio de la cadena
 ROOT_URLCONF = 'decide.urls'
 
 TEMPLATES = [

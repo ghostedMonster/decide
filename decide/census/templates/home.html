@@ -1,9 +1,18 @@
 <!-- templates/home.html -->
 {% extends 'base.html' %}
+{% load i18n static %}
 
-{% block title %}Home{% endblock %}
-
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static 'census/census.css' %}">
+    <title>Home</title>
+{% endblock %}
 {% block content %}
+    <h1>Censo</h1>
+    <div class="cuadro">
     {% if user.is_authenticated and user.is_superuser %}
         Hi {{ user.username }}! if you want to see the census, click <a id="index" href="{% url 'index' %}">here</a>
         <p><a id="logout" href="{% url 'logout' %}?next=/census/">logout</a></p>
@@ -11,4 +20,5 @@
         <p>You are not logged in</p>
         <a id="login" href="{% url 'login' %}">login</a>
     {% endif %}
+    </div>
 {% endblock %}
