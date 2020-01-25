@@ -2,12 +2,18 @@ dist: xenial
 
 services:
   - postgresql
+  - xvfb
 addons:
   postgresql: "9.4"
 before_script:
   - psql -U postgres -c "create user decide password 'decide'"
   - psql -U postgres -c "create database test_decide owner decide"
   - psql -U postgres -c "ALTER USER decide CREATEDB"
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+  - rackup  # start a Web server
+  - sleep 3 # give Web server some time to bind to sockets, etc
 language: python
 python:
   - "3.6"
@@ -17,6 +23,7 @@ install:
   - pip install selenium==2.33.0
 script:
   - cd decide
+  - xvfb-run --server-args="-screen 0 1024x768x24" make test
   - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
   - coverage xml
   - python-codacy-coverage -r coverage.xml
