@@ -73,3 +73,20 @@ class CensusTestCase(BaseTestCase):
         response = self.client.delete('/census/{}/'.format(1), data, format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
+
+
+    def test_sampling_fraction(self):
+        self.assertEqual(self.census.samplingfraction(28, 4), 14.2857)
+        self.assertEqual(self.census.samplingfraction(500, 321), 64.2000)
+        self.assertEqual(self.census.samplingfraction(30000, 11679), 38.9300)
+        self.assertEqual(self.census.samplingfraction(500000, 245630), 49.1260)
+        self.assertEqual(self.census.samplingfraction(1000, 41), 4.1000)
+        self.assertEqual(self.census.samplingfraction(4500, 4500), 100.0000)
+
+    def test_elevation_coefficient(self):
+        self.assertEqual(self.census.elevationcoefficient(28, 4), 7.0000)
+        self.assertEqual(self.census.elevationcoefficient(500, 321), 1.5576)
+        self.assertEqual(self.census.elevationcoefficient(30000, 11679), 2.5687)
+        self.assertEqual(self.census.elevationcoefficient(500000, 245630), 2.0356)
+        self.assertEqual(self.census.elevationcoefficient(1000, 41), 24.3902)
+        self.assertEqual(self.census.elevationcoefficient(4500, 4500), 1.0000)    
