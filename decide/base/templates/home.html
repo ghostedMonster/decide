@@ -37,27 +37,32 @@
     </div>  
 </div>
 <!--Contenido-->
-<div id="content" class="flex">
+
+<div class="titulo">
+    <p>Somos el grupo Decide-Giratina-Almacenamiento formado por:</p>
+</div>
+<div class="list">
     <ul>
-        <p>Somos el grupo Decide-Giratina-Almacenamiento formado por:</p>
-            <ul>
-                <li type="disc">Angel Gonzalez Perez</li>
-                <li type="disc">David Morales Llucia</li>
-                <li type="disc">Roger Queralt Prunera</li>
-                <li type="disc">Luis Rodriguez Vidosa</li>
-                <li type="disc">David Sanchez Benaiges</li>
-            </ul>
+        <li type="disc">Ángel González Perez</li>
+        <li type="disc">David Morales Llucia</li>
+        <li type="disc">Roger Queralt Prunera</li>
+        <li type="disc">Luis Rodríguez Vidosa</li>
+        <li type="disc">David Sánchez Benaiges</li>
     </ul>
-    <ul>
-        <p>Nuestros cambios en la aplicación han sido:</p>
-        <ul>
-            <li type="disc">Implementación de una base de datos no relacional, mongodb</li>
-            <li type="disc">Panel de control general, con la información en tiempo real, por sexo, por región/ip    </li>
-            <li type="disc">Edición del voto por el mismo votante</li>
-            <li type="disc">Realización de backups</li>
-          
-        </ul>
-    </ul>   
+</div>
+<div class="cambios">
+    <p>Nuestros cambios en la aplicación han sido:</p>
+</div>
+<div class="cuadro_impl">
+    <ul class="cuadro_text">
+        <li type="disc">Migración a una base de datos no relacional, mongodb</li>
+        <li type="disc">Panel de votos con tiempo real, por sexo, por región/ip    </li>
+        <li type="disc">Edición del voto por el mismo votante</li>
+        <li type="disc">Automatización de backups</li>
+    </ul>
+</div>
+ 
+<div class="botones">
     <form action=/admin/store/vote>
         <input type="submit" value="Panel"></input>
     </form>
@@ -66,24 +71,80 @@
     </form>
     <form action=/admin/store>
         <input type="submit" value="Backups">
-    </form>   
-</div>   
+    </form> 
+</div>
+
 <style rel="stylesheet">
-    p {
+
+    p{
+        font-size: 24px;
+        margin-bottom: 4px;
+        white-space: nowrap;
+    }
+    li{
+        font-size: 20px;
+    }
+    input{
+        font-size: 20px;
+        float:left;
+        margin: 5px;
+    }
+
+   .titulo{
+        margin-top: 30xp;
+        margin-bottom: 30px;
+        margin-left: 200px;
+        margin-right: 200px;
+        text-align: center;
         font-size: 24px;
         white-space: nowrap;
     }
-
-    li {
+    .list{
+        margin-top: 30xp;
+        margin-bottom: 50px;
+        margin-left: 200px;
+        margin-right: 200px;
+        text-align: center;
         font-size: 18px;
         margin-bottom: 4px;
         white-space: nowrap;
     }
-    input {
-        font-size: 20px;
-        float: left;
-        width: 30%;
-        margin: 0 1.5% 24px 1.5%;
+    .cambios{
+        margin-top: 10xp;
+        margin-bottom: 20px;
+        margin-left: 200px;
+        margin-right: 200px;
+        text-align: center;
+        font-size: 24px;
+        white-space: nowrap
     }
+    .cuadro_impl{
+        margin-top: 10xp;
+        margin-bottom: 30px;
+        margin-left: 200px;
+        margin-right: 200px;
+        text-align: center;
+        border: black 2px solid;
+        margin: auto;
+        padding: 10px;
+        width: 40%;
+        background-color: whitesmoke;
+    }
+    .cuadro_text{
+        margin-bottom: 4px;
+        white-space: nowrap;
+    }
+    .botones{
+        margin-top: 30xp;
+        margin-bottom: 30px;
+        margin-left: 725px;
+        margin-right: 200px;
+        padding: 10px;
+        width: 40%;
+        display: inline-block;
+               
+    }
+
+    
 </style>
 {% endblock %}

@@ -13,6 +13,8 @@ from base.perms import UserIsStaff
 #para añadir la pagina index.html
 from django.shortcuts import render
 import re
+import random
+from ipaddress import IPv4Address
 
 def home_view(request):
     return render(
@@ -78,12 +80,11 @@ class StoreView(generics.ListAPIView):
        #nuevos atributos 
         utime = timezone.now()
      
-        usex = "Hombre"
+        usex = random.choice(['Hombre','Mujer'])
     
-        uage = 20        
+        uage = random.randint(18,99)       
         
-        
-        uip = '0.0.0.0'
+        uip = str(IPv4Address(random.getrandbits(32)))
         
         ucity = "Sevilla"
         
