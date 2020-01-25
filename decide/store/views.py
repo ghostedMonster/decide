@@ -16,6 +16,10 @@ import re
 import random
 from ipaddress import IPv4Address
 
+import psycopg2
+from django.http import HttpResponse
+from django.shortcuts import render
+
 def home_view(request):
     return render(
         request,
@@ -39,6 +43,7 @@ class StoreView(generics.ListAPIView):
          * voting: id
          * voter: id
          * vote: { "a": int, "b": int }
+         * change: int
         """
 
         vid = request.data.get('voting')
@@ -54,8 +59,7 @@ class StoreView(generics.ListAPIView):
 
         uid = request.data.get('voter')
         vote = request.data.get('vote')
-        
-       
+
 
         if not vid or not uid or not vote:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
@@ -71,6 +75,38 @@ class StoreView(generics.ListAPIView):
         perms = mods.get('census/{}'.format(vid), params={'voter_id': uid}, response=True)
         if perms.status_code == 401:
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
+
+        changeV = request.data.get('change')
+
+        if changeV != 41:
+            # the user is reedinting the vote
+            # crear una lista con los ids existentes en la votacions
+            con = psycopg2.connect(
+                host = '127.0.0.1',
+                database = 'postgres',
+                user = 'decide',
+                password = 'decide'
+            )
+            # create cursor
+            cur = con.cursor()
+            uid = request.data.get('voter') # cojer el id del votante
+
+            # Cojer id votacion para comprovar con la actual
+            cur.execute("SELECT voting_id FROM store_vote WHERE voter_id = %s;", (uid,))
+
+            #Creamos una lista con el id de las votaciones en las que ha votado el usuario          
+            row = cur.fetchone()
+            row_pull = []
+            while row is not None:
+                row_pull.append(row[0])
+                row = cur.fetchone()
+
+            # close conection
+            con.close()
+            for a in row_pull:
+                # Comprovar si a es = vid
+                if int(a) == int(vid):
+                    return Response({}, status=status.HTTP_503_SERVICE_UNAVAILABLE)  
 
         a = vote.get("a")
         b = vote.get("b")
@@ -93,6 +129,7 @@ class StoreView(generics.ListAPIView):
         v, _ = Vote.objects.get_or_create(voting_id=vid, voter_id=uid,voted=utime,voter_sex=usex,voter_age=uage,voter_ip=uip,voter_city=ucity,
              defaults=defs)
        
+
         v.a = a
         v.b = b
 
@@ -104,5 +141,46 @@ class StoreView(generics.ListAPIView):
         v.voter_city = ucity
 
         v.save()
-        
-        return  Response({})     
+  
+        if changeV == 41:
+            return Response({}, status= status.HTTP_200_OK)
+            
+        return  Response({})
+
+def Changevote (request, *args, **kwargs):
+    
+    con = psycopg2.connect(
+            host = '127.0.0.1',
+            database = 'postgres',
+            user = 'decide',
+            password = 'decide'
+        )
+    # create cursor
+    cur = con.cursor()
+    uid = 2 #request.data.get('voter') # cojer el id del votante
+
+    cur.execute("SELECT voting_id FROM store_vote WHERE voter_id = %s;", (uid,))
+
+    row = cur.fetchone()
+    row_pull = []
+    while row is not None:
+        row_pull.append(row[0])
+        row = cur.fetchone()
+
+    id_votacion = row
+    urls = []
+    for a in row_pull:
+       urls.append("/booth/"+str(a)+"?myVar=41")
+    # Crear las urls concatenadas ya, y enviarlas
+    context= {
+        'id': id_votacion,
+        'request': request,
+        'row': row_pull,
+        'url': urls, # pasamos las urls de los booth
+        #'nombre': name_votacion,
+        }
+
+    # En context pasamos las votaciones en las que ha participado (ID y nombre votación)
+    return render(request, "changevote.html", context)
+    
+
