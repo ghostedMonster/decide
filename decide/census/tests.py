@@ -7,6 +7,7 @@ from base import mods
 from base.tests import BaseTestCase
 
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 import unittest
 
@@ -99,8 +100,7 @@ class AccountTestCase(LiveServerTestCase):
     fixtures = ['database.json']
 
     def setUp(self):
-        self.selenium = webdriver.Chrome(
-            executable_path='/home/jose/Escritorio/EGC/env/lib/python3.6/site-packages/chromedriver_linux64/chromedriver')
+        self.selenium = webdriver.Chrome(ChromeDriverManager().install())
         super(AccountTestCase, self).setUp()
 
     def tearDown(self):
