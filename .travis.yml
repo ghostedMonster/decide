@@ -24,4 +24,6 @@ install:
 script:
   - cd decide
   - xvfb-run --server-args="-screen 0 1024x768x24" make test
-  - python ./manage.py test census
+  - coverage run manage.py test census
+after_script:
+  coveralls
